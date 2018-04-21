@@ -1,0 +1,73 @@
+<!--
+  Generated template for the VisualizzacivicoPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>visualizzacivico</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <div #map id="map"></div>
+  <ion-row>
+    <ion-col>
+      <img src="assets/imgs/numerocivico.png" alt="Immagine profilo">
+    </ion-col>
+    <ion-col>
+      <img src="assets/imgs/casa.png" alt="Immagine profilo">
+    </ion-col>
+  </ion-row>
+  <ion-list>
+
+    <ion-item>
+      <ion-label floating>Latitudine</ion-label>
+      <ion-input type="text" [(ngModel)]="latitudine" [readonly]="true"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating>Longitudine</ion-label>
+      <ion-input type="text" [(ngModel)]="longitudine" [readonly]="true"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Regione</ion-label>
+      <ion-input type="text" [(ngModel)]="regione" [readonly]="true"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Provincia</ion-label>
+      <ion-input type="text" [(ngModel)]="provincia" [readonly]="true"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Paese</ion-label>
+      <ion-input type="text" [(ngModel)]="paese" [readonly]="true"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>DUG</ion-label>
+      <ion-input type="text" [(ngModel)]="dug" [readonly]="true"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Denominazione</ion-label>
+      <ion-input type="text" [(ngModel)]="denominazione" [readonly]="true"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Civico</ion-label>
+      <ion-input type="number" [(ngModel)]="civico" [readonly]="true"></ion-input>
+    </ion-item>
+    <div padding>
+
+      <ion-row>
+        <ion-col>
+          <button ion-button color="danger" (click)="elimina()" round>Elimina</button>
+        </ion-col>
+        <ion-col>
+          <button ion-button color="secondary" (click)="modificaCivico()" round>Modifica</button>
+        </ion-col>
+      </ion-row>
+    </div>
+  </ion-list>
+</ion-content>

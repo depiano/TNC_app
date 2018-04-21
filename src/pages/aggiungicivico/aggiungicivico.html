@@ -1,0 +1,90 @@
+<!--
+  Generated template for the AggiungicivicoPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>aggiungicivico</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list>
+
+    <ion-item>
+      <ion-label floating>Latitudine</ion-label>
+      <ion-input type="text" [(ngModel)]="latitudine"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating>Longitudine</ion-label>
+      <ion-input type="text" [(ngModel)]="longitudine"></ion-input>
+    </ion-item>
+
+
+
+
+      <ion-list>
+<ion-item>
+      <ion-label >Search DUG</ion-label>
+</ion-item>
+          <ion-toolbar>
+              <ion-searchbar  [(ngModel)]="name" (input)="filterItem(name)" [showCancelButton]='true'  (ionCancel)="dismiss()" (change)="onClear()"></ion-searchbar>
+          </ion-toolbar>
+          <ion-list>
+              <ion-item *ngFor="let item of filteredItems" tappable   (click)="chooseItem(item)">
+                  {{ item.name }}
+              </ion-item>
+
+          </ion-list>
+      </ion-list>
+
+
+
+
+      <ion-item>
+          <ion-label floating>DUG</ion-label>
+          <ion-input type="text" [(ngModel)]="searchDUG" name="DUG"></ion-input>
+      </ion-item>
+
+
+
+
+
+
+        <ion-item>
+            <ion-label floating>Denominazione</ion-label>
+        <ion-input type="text" [(ngModel)]="denominazione" name="denominazione"></ion-input>
+      </ion-item>
+
+
+      <ion-item>
+          <ion-label floating>Civico</ion-label>
+        <ion-input type="number" [(ngModel)]="civico" name="civico"></ion-input>
+      </ion-item>
+
+    <div padding>
+      <ion-row>
+        <ion-col>
+    <button ion-button color="primary" (click)="fotoCivico()" round>Foto civico</button>
+        </ion-col>
+        <ion-col>
+    <button ion-button color="primary" (click)="fotoCasa()" round>Foto casa</button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <button ion-button color="danger" round>Annulla</button>
+        </ion-col>
+        <ion-col>
+          <button ion-button color="secondary" (click)="conferma()" round>Conferma</button>
+        </ion-col>
+      </ion-row>
+    </div>
+  </ion-list>
+</ion-content>
