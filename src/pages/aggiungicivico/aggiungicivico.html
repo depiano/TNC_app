@@ -18,12 +18,12 @@
 
     <ion-item>
       <ion-label floating>Latitudine</ion-label>
-      <ion-input type="text" [(ngModel)]="latitudine"></ion-input>
+      <ion-input type="text" [(ngModel)]="latitudine" (change)="onAlert()"></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label floating>Longitudine</ion-label>
-      <ion-input type="text" [(ngModel)]="longitudine"></ion-input>
+      <ion-input type="text" [(ngModel)]="longitudine" (change)="onAlert()"></ion-input>
     </ion-item>
 
 
@@ -49,7 +49,7 @@
 
       <ion-item>
           <ion-label floating>DUG</ion-label>
-          <ion-input type="text" [(ngModel)]="searchDUG" name="DUG"></ion-input>
+          <ion-input type="text" [(ngModel)]="searchDUG" name="DUG" (change)="onAlert()"></ion-input>
       </ion-item>
 
 
@@ -59,15 +59,17 @@
 
         <ion-item>
             <ion-label floating>Denominazione</ion-label>
-        <ion-input type="text" [(ngModel)]="denominazione" name="denominazione"></ion-input>
+        <ion-input type="text" [(ngModel)]="denominazione" name="denominazione" (change)="onAlert()"></ion-input>
       </ion-item>
 
 
       <ion-item>
           <ion-label floating>Civico</ion-label>
-        <ion-input type="number" [(ngModel)]="civico" name="civico"></ion-input>
+        <ion-input type="number" [(ngModel)]="civico" name="civico" (change)="onAlert()"></ion-input>
       </ion-item>
-
+      <div #alert align="center" *ngIf="alert">
+          <label  style="color:blue">Riempire tutti i campi</label>
+      </div>
     <div padding>
       <ion-row>
         <ion-col>

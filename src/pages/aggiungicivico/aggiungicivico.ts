@@ -19,6 +19,7 @@ import {HTTP} from "@ionic-native/http";
   templateUrl: 'aggiungicivico.html',
 })
 export class AggiungicivicoPage {
+    alert;
   latitudine:any;
   longitudine:any;
   DUG;
@@ -41,7 +42,7 @@ export class AggiungicivicoPage {
 
 
     constructor(public viewCtrl: ViewController, public navCtrl: NavController, public navParams: NavParams,private camera: Camera,  private http: HTTP,private nativeGeocoder: NativeGeocoder, public alertCtrl: AlertController) {
-
+this.alert=false;
 
         this.autocompleteItems = [];
         this.autocomplete = {
@@ -167,6 +168,7 @@ export class AggiungicivicoPage {
                 this.denominazione=result[0].thoroughfare;
                 this.codicepostale=result[0].postalCode;
                 this.provincia=result[0].subAdministrativeArea;
+
             })
             .catch((error: any) => console.log(error));
 
@@ -196,11 +198,7 @@ onClear(){
     chooseItem(item: any) {
        // this.selectedItems.push(item);
        this.searchDUG= '' +item.name.toUpperCase();
-        console.log(this.selectedItems);
-        console.log('provaaaaa ',this.searchDUG);
         this.filteredItems=[];
-
-        // this.geoCode(this.geo);//convert Address to lat and long
     }
 
 
@@ -259,48 +257,53 @@ onClear(){
 
 
   conferma(){
-      this.onIndirizzo("via della liberta");
-      let postParams = {
-           'LONGITUDINE':this.longitudine,
-           'LATITUDINE':this.latitudine,
-           'CODISTAT':'065052',
-           'NOMECOMUNE':this.paese,
-           'DUG':this.searchDUG,
-           'DENOMINAZIONE':this.denominazione,
-           'CIVICO':this.civico,
-           'ESPONENTE':null,
-           'PATHFOTOCIVICO':null,
-           'PATHFOTOABITAZIONE':null,
-          'EMAIL':null,
-           'CF_USER':null,
-           'CF_SUPERUSER':null,
-           'LONGITUDINE_ARR':null,
-           'LATITUDINE_ARR':null
+      if(this.latitudine===''||this.longitudine===''||this.searchDUG===''||this.denominazione===''){
+this.alert=true;
       }
+      else {
+          this.onIndirizzo("via della liberta");
+          let postParams = {
+              'LONGITUDINE': this.longitudine,
+              'LATITUDINE': this.latitudine,
+              'CODISTAT': '065052',
+              'NOMECOMUNE': this.paese,
+              'DUG': this.searchDUG,
+              'DENOMINAZIONE': this.denominazione,
+              'CIVICO': this.civico,
+              'ESPONENTE': null,
+              'PATHFOTOCIVICO': null,
+              'PATHFOTOABITAZIONE': null,
+              'EMAIL': null,
+              'CF_USER': null,
+              'CF_SUPERUSER': null,
+              'LONGITUDINE_ARR': null,
+              'LATITUDINE_ARR': null
+          }
 
-      let headers = {
-          'Content-Type': 'application/json'
-      };
-      this.http.post('http://tcnapp.altervista.org/script_tncapp/addCivico.php', postParams, headers)
-          .then(data => {
+          let headers = {
+              'Content-Type': 'application/json'
+          };
+          this.http.post('http://tcnapp.altervista.org/script_tncapp/addCivico.php', postParams, headers)
+              .then(data => {
 
-              console.log(data.status);
-              console.log(data.data); // data received by server
-              console.log(data.headers);
-              let alert = this.alertCtrl.create({
-                  title: data.data,
-                  buttons: ['Dismiss']
+                  console.log(data.status);
+                  console.log(data.data); // data received by server
+                  console.log(data.headers);
+                  let alert = this.alertCtrl.create({
+                      title: data.data,
+                      buttons: ['Dismiss']
+                  });
+                  alert.present();
+
+              })
+              .catch(error => {
+
+                  console.log(error.status);
+                  console.log(error.error); // error message as string
+                  console.log(error.headers);
+
               });
-              alert.present();
-
-          })
-          .catch(error => {
-
-              console.log(error.status);
-              console.log(error.error); // error message as string
-              console.log(error.headers);
-
-          });
+      }
   }
 
 
@@ -318,11 +321,10 @@ var dug;
        console.log(i+" "+ j);
        prova=indirizzo.substring(j+1);
 console.log(prova);
+ }
 
-
-
-
-
+    onAlert(){
+        this.alert=false;
     }
 
 }

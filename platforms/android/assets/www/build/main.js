@@ -43,7 +43,6 @@ var AggiungicivicoPage = /** @class */ (function () {
         this.alertCtrl = alertCtrl;
         this.searchDUG = '';
         this.name = '';
-        this.via = [];
         this.autocompleteItems = [];
         this.autocomplete = {
             query: ''
@@ -63,7 +62,7 @@ var AggiungicivicoPage = /** @class */ (function () {
             { "id": 25, "name": "Canton" }, { "id": 26, "name": "Cantone" }, { "id": 27, "name": "Cascina" },
             { "id": 28, "name": "Case sparse" }, { "id": 29, "name": "Cavalcavia" }, { "id": 30, "name": "Centro Abitato" },
             { "id": 31, "name": "Chiassetto" }, { "id": 32, "name": "Chiassino" }, { "id": 33, "name": "Chiasso" },
-            { "id": 34, "name": "chiassuolo" }, { "id": 35, "name": "Castello" },
+            { "id": 34, "name": "chiassuolo" }, { "id": 35, "name": "Castello" }, { "id": 36, "name": "Descrizione" },
             { "id": 37, "name": "Circonvalazione" }, { "id": 38, "name": "Collegamento" }, { "id": 39, "name": "Complanare" },
             { "id": 40, "name": "Contrà" }, { "id": 41, "name": "Contrada" }, { "id": 42, "name": "Cupa" },
             { "id": 43, "name": "Discesa" }, { "id": 44, "name": "Emiciclo" }, { "id": 45, "name": "Esedra" },
@@ -140,33 +139,22 @@ var AggiungicivicoPage = /** @class */ (function () {
             { "id": 296, "name": "Zona industriale" },];
         this.latitudine = this.navParams.get('latitudine');
         this.longitudine = this.navParams.get('longitudine');
-        this.nazione = "ofsgdg";
-        this.codicenazione = "";
         this.DUG = "";
         this.denominazione = "";
         this.paese = "";
-        this.nazione = "";
-        this.regione = "";
         this.codicepostale = "";
         this.provincia = "";
         this.nativeGeocoder.reverseGeocode(this.latitudine, this.longitudine)
             .then(function (result) {
-            _this.stringa = 'ciao ' + JSON.stringify(result.countryName);
-            _this.nazione = JSON.stringify(result);
             var alert = _this.alertCtrl.create({
                 title: _this.stringa,
-                subTitle: _this.nazione,
                 buttons: ['Dismiss']
             });
             alert.present();
-            _this.nazione = result[0].countryName;
-            _this.codicenazione = result[0].countryCode;
-            _this.paese = result[0].locality;
+            _this.paese = result[0].locality.toUpperCase();
             _this.denominazione = result[0].thoroughfare;
             _this.codicepostale = result[0].postalCode;
-            _this.regione = result[0].administrativeArea;
             _this.provincia = result[0].subAdministrativeArea;
-            _this.via = _this.denominazione.split(" ");
         })
             .catch(function (error) { return console.log(error); });
     }
@@ -187,10 +175,7 @@ var AggiungicivicoPage = /** @class */ (function () {
     AggiungicivicoPage.prototype.chooseItem = function (item) {
         // this.selectedItems.push(item);
         this.searchDUG = '' + item.name.toUpperCase();
-        console.log(this.selectedItems);
-        console.log('provaaaaa ', this.searchDUG);
         this.filteredItems = [];
-        // this.geoCode(this.geo);//convert Address to lat and long
     };
     AggiungicivicoPage.prototype.assignCopy = function () {
         this.filteredItems = Object.assign([], this.selectedItems);
@@ -232,13 +217,14 @@ var AggiungicivicoPage = /** @class */ (function () {
     };
     AggiungicivicoPage.prototype.conferma = function () {
         var _this = this;
+        this.onIndirizzo("via della liberta");
         var postParams = {
             'LONGITUDINE': this.longitudine,
             'LATITUDINE': this.latitudine,
             'CODISTAT': '065052',
             'NOMECOMUNE': this.paese,
             'DUG': this.searchDUG,
-            'DENOMINAZIONE': this.via[1] + " " + this.via[2],
+            'DENOMINAZIONE': this.denominazione,
             'CIVICO': this.civico,
             'ESPONENTE': null,
             'PATHFOTOCIVICO': null,
@@ -268,6 +254,20 @@ var AggiungicivicoPage = /** @class */ (function () {
             console.log(error.error); // error message as string
             console.log(error.headers);
         });
+    };
+    AggiungicivicoPage.prototype.onIndirizzo = function (indirizzo) {
+        var i = 0;
+        var j = 0;
+        var prova = '';
+        var dug;
+        var indTot;
+        indTot = indirizzo.split(" ");
+        dug = indTot[0];
+        i = dug.length;
+        j = indTot.length;
+        console.log(i + " " + j);
+        prova = indirizzo.substring(j + 1);
+        console.log(prova);
     };
     AggiungicivicoPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
@@ -312,22 +312,33 @@ var SignupPage = /** @class */ (function () {
     function SignupPage(navCtrl, navParams) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
+        this.user = { fullname: '', email: '', codiceF: '', telefono: '', password: '', confermaPassword: '' };
+        this.alert = false;
     }
     SignupPage.prototype.ionViewDidLoad = function () {
         console.log('ionViewDidLoad SignupPage');
     };
-    SignupPage.prototype.onControlData = function () {
-        this.onSignup();
-    };
     SignupPage.prototype.onSignup = function () {
-        this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_2__login_login__["a" /* LoginPage */]);
+        this.onControl();
     };
     SignupPage.prototype.onAnnulla = function () {
         this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_2__login_login__["a" /* LoginPage */]);
     };
+    SignupPage.prototype.onControl = function () {
+        if (this.user.fullname === '' || this.user.email === '' || this.user.telefono === '' || this.user.password === ''
+            || this.user.confermaPassword === '' || this.user.codiceF === '') {
+            this.alert = true;
+        }
+        else {
+            this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_2__login_login__["a" /* LoginPage */]);
+        }
+    };
+    SignupPage.prototype.onAlert = function () {
+        this.alert = false;
+    };
     SignupPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-signup',template:/*ion-inline-start:"/Users/vincenzobevilacqua/Desktop/TNCapp/src/pages/signup/signup.html"*/'<!--\n  Generated template for the SignupPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>signup</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content class="login-page">\n\n\n  <ion-list>\n    <ion-item>\n      <ion-input type="text" name="fullname" placeholder="Fullname" required></ion-input>\n    </ion-item>\n\n\n    <ion-item>\n      <ion-input type="text"  placeholder="Email"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-input type="text"  placeholder="Telefono"></ion-input>\n    </ion-item>\n\n\n    <ion-item>\n      <ion-input type="password"  placeholder="Password"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-input type="password" placeholder="Conferma password"></ion-input>\n    </ion-item>\n\n\n  </ion-list>\n\n  <div padding>\n    <ion-row responsive-sm>\n      <ion-col>\n        <button ion-button (click)="onAnnulla()" color="danger" block>Annulla</button>\n      </ion-col>\n      <ion-col>\n        <button ion-button (click)="onControlData()" color="secondary"  block>Conferma</button>\n      </ion-col>\n\n    </ion-row>\n  </div>\n\n\n</ion-content>\n'/*ion-inline-end:"/Users/vincenzobevilacqua/Desktop/TNCapp/src/pages/signup/signup.html"*/,
+            selector: 'page-signup',template:/*ion-inline-start:"/Users/vincenzobevilacqua/Desktop/TNCapp/src/pages/signup/signup.html"*/'<!--\n  Generated template for the SignupPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>signup</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content class="login-page">\n\n\n  <ion-list>\n    <ion-item>\n      <ion-input type="text" name="fullname" placeholder="Fullname"  [(ngModel)]="user.fullname" required (change)="onAlert()"></ion-input>\n    </ion-item>\n\n\n    <ion-item>\n      <ion-input type="text" [(ngModel)]="user.email" placeholder="Email" name="email" (change)="onAlert()"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-input type="text" [(ngModel)]="user.codiceF" placeholder="Codice Fiscale" name="codiceF" (change)="onAlert()"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-input type="text"  [(ngModel)]="user.telefono" placeholder="Telefono" name="telefono" (change)="onAlert()"></ion-input>\n    </ion-item>\n\n\n    <ion-item>\n      <ion-input type="password" [(ngModel)]="user.password" placeholder="Password" name="password" (change)="onAlert()"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-input type="password" placeholder="Conferma password" [(ngModel)]="user.confermaPassword" name="confermaPass" (change)="onAlert()"></ion-input>\n    </ion-item>\n\n\n  </ion-list>\n  <div #alert align="center" *ngIf="alert">\n    <label  style="color:blue">Riempire tutti i campi</label>\n  </div>\n  <div padding>\n    <ion-row responsive-sm>\n      <ion-col>\n        <button ion-button (click)="onAnnulla()" color="danger" block>Annulla</button>\n      </ion-col>\n      <ion-col>\n        <button ion-button (click)="onSignup()" color="secondary"  block>Conferma</button>\n      </ion-col>\n\n    </ion-row>\n  </div>\n\n\n</ion-content>\n'/*ion-inline-end:"/Users/vincenzobevilacqua/Desktop/TNCapp/src/pages/signup/signup.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */]])
     ], SignupPage);
@@ -1136,14 +1147,15 @@ var LoginPage = /** @class */ (function () {
         this.alertCtrl = alertCtrl;
         sessionStorage.clear();
         this.user = { email: '', password: '' };
+        this.alert = false;
     }
     LoginPage.prototype.onLogin = function () {
         //this.navCtrl.setRoot(HomePage);
         console.log('email: ', this.user.email);
         console.log('password: ', this.user.password);
         /*
-        if(this.user.email==='' || this.user.password===''){
-            //errore
+          if(this.user.email==='' || this.user.password===''){
+           this.alert=true;
         }
         else{
         */
@@ -1188,9 +1200,12 @@ var LoginPage = /** @class */ (function () {
         });
         this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_4__profilo_profilo__["a" /* ProfiloPage */]);
     };
+    LoginPage.prototype.onAlert = function () {
+        this.alert = false;
+    };
     LoginPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-welcome',template:/*ion-inline-start:"/Users/vincenzobevilacqua/Desktop/TNCapp/src/pages/login/login.html"*/'<!--\n  Generated template for the LoginPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>login</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content scroll="false">\n  <div class="splash-bg"></div>\n  <div class="splash-info">\n    <div class="splash-logo"></div>\n    <div class="splash-intro">\n      Nome progetto GIS\n\n    </div>\n  </div>\n  <div padding>\n    <ion-list>\n      <ion-item>\n        <ion-input type="text" placeholder="Email" [(ngModel)]="user.email" name="email" #email></ion-input>\n      </ion-item>\n\n      <ion-item>\n        <ion-input type="password"  placeholder="Password" [(ngModel)]="user.password" name="password" #password></ion-input>\n      </ion-item>\n\n    </ion-list>\n    <button ion-button block (click)="onLogin()"  color="secondary">Login</button>\n    <button ion-button block (click)="onSignup()">Registrati</button>\n\n  </div>\n</ion-content>\n'/*ion-inline-end:"/Users/vincenzobevilacqua/Desktop/TNCapp/src/pages/login/login.html"*/,
+            selector: 'page-welcome',template:/*ion-inline-start:"/Users/vincenzobevilacqua/Desktop/TNCapp/src/pages/login/login.html"*/'<!--\n  Generated template for the LoginPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>login</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content scroll="false">\n  <div class="splash-bg"></div>\n  <div class="splash-info">\n    <div class="splash-logo"></div>\n    <div class="splash-intro">\n    TNC\n\n    </div>\n  </div>\n  <div padding>\n    <ion-list>\n      <ion-item>\n        <ion-input type="text" placeholder="Email" [(ngModel)]="user.email" name="email" #email></ion-input>\n      </ion-item>\n\n      <ion-item>\n        <ion-input type="password"  placeholder="Password" [(ngModel)]="user.password" name="password" #password></ion-input>\n      </ion-item>\n\n    </ion-list>\n    <div #alert align="center" *ngIf="alert">\n      <label  style="color:blue">Riempire tutti i campi</label>\n    </div>\n    <button ion-button block (click)="onLogin()"  color="secondary">Login</button>\n    <button ion-button block (click)="onSignup()">Registrati</button>\n\n  </div>\n</ion-content>\n'/*ion-inline-end:"/Users/vincenzobevilacqua/Desktop/TNCapp/src/pages/login/login.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_http__["a" /* HTTP */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]])
     ], LoginPage);
@@ -1291,50 +1306,126 @@ var MappaPage = /** @class */ (function () {
                 };
             })(marker, i));
         }
-        var Roccapiemonte = [
-            { lat: 40.7657981158734, lng: 14.6961246283405 },
-            { lat: 40.7684736939535, lng: 14.6943572742833 },
-            { lat: 40.7670027105486, lng: 14.6866980378971 },
-            { lat: 40.766536663893, lng: 14.6776360781577 },
-            { lat: 40.7667244623426, lng: 14.6771141307328 },
-            { lat: 40.7670457828174, lng: 14.6756193683446 },
-            { lat: 40.7679981277934, lng: 14.6594882874894 },
-            { lat: 40.7670438885875, lng: 14.6563774577233 },
-            { lat: 40.76596586391381, lng: 14.657247397652 },
-            { lat: 40.7659766396426, lng: 14.6582180709581 },
-            { lat: 40.7650346156357, lng: 14.6620864938814 },
-            { lat: 40.7648484274642, lng: 14.6626685492568 },
-            { lat: 40.763009152601, lng: 14.6656516027216 },
-            { lat: 40.7624713193261, lng: 14.6665188912293 },
-            { lat: 40.76139466943971, lng: 14.6675422542161 },
-            { lat: 40.7608076765326, lng: 14.6678540619316 },
-            { lat: 40.7601071958191, lng: 14.6680940382282 },
-            { lat: 40.759269436998, lng: 14.6682882741261 },
-            { lat: 40.75837850500201, lng: 14.6686481545231 },
-            { lat: 40.7576128717951, lng: 14.6691141535224 },
-            { lat: 40.75686864124351, lng: 14.6698764453449 },
-            { lat: 40.7536782308659, lng: 14.6755189449492 },
-            { lat: 40.75370127201741, lng: 14.6803410889426 },
-            { lat: 40.7537269738605, lng: 14.6857275535856 },
-            { lat: 40.7536372067753, lng: 14.6883297091426 },
-            { lat: 40.7535472374918, lng: 14.6904698736429 },
-            { lat: 40.7527319858736, lng: 14.6960288748174 },
-            { lat: 40.74724325291361, lng: 14.7039725070869 },
-            { lat: 40.74521620003811, lng: 14.705733761767 },
-            { lat: 40.7517985984509, lng: 14.7138506743964 },
-            { lat: 40.7542385364511, lng: 14.7100354301736 },
-            { lat: 40.7657981158734, lng: 14.6961246283405 },
+        var Fisciano = [
+            { lat: 40.7569672387864, lng: 14.8469033932164 },
+            { lat: 40.7548932018406, lng: 14.8440531838236 },
+            { lat: 40.75460309534711, lng: 14.8434735532348 },
+            { lat: 40.7543970452326, lng: 14.8424796062293 },
+            { lat: 40.7572502249888, lng: 14.8358376567619 },
+            { lat: 40.7644690742173, lng: 14.8205711954808 },
+            { lat: 40.7753523414929, lng: 14.8144276698351 },
+            { lat: 40.7759696457375, lng: 14.8185965360347 },
+            { lat: 40.7768306464178, lng: 14.8215938018657 },
+            { lat: 40.7770860903149, lng: 14.8221490467869 },
+            { lat: 40.7777808228682, lng: 14.822917450509 },
+            { lat: 40.7811907444461, lng: 14.825350828816 },
+            { lat: 40.7835873101809, lng: 14.826552773831 },
+            { lat: 40.7844887991609, lng: 14.8268820128328 },
+            { lat: 40.79021181605331, lng: 14.8286098577924 },
+            { lat: 40.7910419063102, lng: 14.8285716610082 },
+            { lat: 40.7917264052915, lng: 14.8284755328428 },
+            { lat: 40.7925348771965, lng: 14.8283310610717 },
+            { lat: 40.7932809556526, lng: 14.8279967833361 },
+            { lat: 40.7936785296411, lng: 14.8277007653922 },
+            { lat: 40.7940855168954, lng: 14.8270413503017 },
+            { lat: 40.7941551990348, lng: 14.8264656000153 },
+            { lat: 40.7944147946612, lng: 14.8256947852795 },
+            { lat: 40.7948817770413, lng: 14.8248281484863 },
+            { lat: 40.8003093304545, lng: 14.8173691141031 },
+            { lat: 40.8031436620117, lng: 14.8146344225689 },
+            { lat: 40.8039196602481, lng: 14.8138857252676 },
+            { lat: 40.8045291122828, lng: 14.8127811023978 },
+            { lat: 40.8047199934392, lng: 14.8118712880723 },
+            { lat: 40.80480779512491, lng: 14.8114527776093 },
+            { lat: 40.8051418080726, lng: 14.8082271656103 },
+            { lat: 40.8050412347875, lng: 14.8076341827317 },
+            { lat: 40.8026580916892, lng: 14.7994732522797 },
+            { lat: 40.8019108009578, lng: 14.7992976650185 },
+            { lat: 40.799482953517, lng: 14.7913867218854 },
+            { lat: 40.8011219421419, lng: 14.7860391630079 },
+            { lat: 40.8017048252549, lng: 14.7810419768125 },
+            { lat: 40.8054401952143, lng: 14.7743309989603 },
+            { lat: 40.80465885183041, lng: 14.7650898745179 },
+            { lat: 40.8042049422059, lng: 14.7652321183009 },
+            { lat: 40.8036291889534, lng: 14.7653514864993 },
+            { lat: 40.8030301579324, lng: 14.7654239995213 },
+            { lat: 40.8023561724852, lng: 14.7654686138214 },
+            { lat: 40.7927464198528, lng: 14.7656150610603 },
+            { lat: 40.7920295681202, lng: 14.7656269676265 },
+            { lat: 40.7917210545204, lng: 14.7656233598447 },
+            { lat: 40.791310885349, lng: 14.7656154165859 },
+            { lat: 40.7907116811508, lng: 14.7656034456002 },
+            { lat: 40.78939808508691, lng: 14.7654228596773 },
+            { lat: 40.7891134235096, lng: 14.7653838260127 },
+            { lat: 40.7887724198636, lng: 14.7651879401476 },
+            { lat: 40.7885793221815, lng: 14.7650708599837 },
+            { lat: 40.7880666086997, lng: 14.7647599920637 },
+            { lat: 40.7878029041954, lng: 14.7646001050772 },
+            { lat: 40.7874671622524, lng: 14.7643619763465 },
+            { lat: 40.786364844574, lng: 14.7633664000576 },
+            { lat: 40.7861550557345, lng: 14.7631471864249 },
+            { lat: 40.7855943062338, lng: 14.7625612540961 },
+            { lat: 40.7854407123894, lng: 14.762400764736 },
+            { lat: 40.7853175963032, lng: 14.7622721221207 },
+            { lat: 40.7835511882686, lng: 14.7600824887407 },
+            { lat: 40.7829558182788, lng: 14.759343276363 },
+            { lat: 40.7823692811849, lng: 14.7585665082948 },
+            { lat: 40.7801534381833, lng: 14.7580818824421 },
+            { lat: 40.77992521812191, lng: 14.758054962062 },
+            { lat: 40.7780294733186, lng: 14.7580426703552 },
+            { lat: 40.77777983606111, lng: 14.7580529596206 },
+            { lat: 40.7776053941879, lng: 14.7580723597328 },
+            { lat: 40.77582884547091, lng: 14.75897988865 },
+            { lat: 40.7756018901326, lng: 14.7591727815223 },
+            { lat: 40.7753681482864, lng: 14.7593714406809 },
+            { lat: 40.7732237490459, lng: 14.7636334041767 },
+            { lat: 40.77284582531431, lng: 14.7646182129894 },
+            { lat: 40.7695769156715, lng: 14.7737056091006 },
+            { lat: 40.7611526492431, lng: 14.7678464150925 },
+            { lat: 40.760494131727, lng: 14.7683227783251 },
+            { lat: 40.7601086726543, lng: 14.7687392100911 },
+            { lat: 40.7576282219195, lng: 14.7723366776105 },
+            { lat: 40.757332711264, lng: 14.7732025861987 },
+            { lat: 40.7571975543347, lng: 14.7738517948284 },
+            { lat: 40.7571547826214, lng: 14.7740572389496 },
+            { lat: 40.7570653575591, lng: 14.7744945866005 },
+            { lat: 40.7578134203366, lng: 14.7778811842591 },
+            { lat: 40.7568237167358, lng: 14.789328354844 },
+            { lat: 40.7561373437229, lng: 14.7932165252023 },
+            { lat: 40.752990316128, lng: 14.7970758425662 },
+            { lat: 40.7453311302895, lng: 14.8054384586028 },
+            { lat: 40.7382618875071, lng: 14.811734590122 },
+            { lat: 40.7370282663681, lng: 14.8123657659526 },
+            { lat: 40.7359449376189, lng: 14.8129619716392 },
+            { lat: 40.7352194446652, lng: 14.8139584899271 },
+            { lat: 40.7313710039602, lng: 14.8199257972324 },
+            { lat: 40.7327523066259, lng: 14.8202906419241 },
+            { lat: 40.7332217443562, lng: 14.8207976414578 },
+            { lat: 40.7361844881657, lng: 14.8257527048592 },
+            { lat: 40.7373657191739, lng: 14.8283783077788 },
+            { lat: 40.7379436809474, lng: 14.8294074886308 },
+            { lat: 40.7411497798517, lng: 14.8331064632597 },
+            { lat: 40.7420154828927, lng: 14.8338747137511 },
+            { lat: 40.7451327494351, lng: 14.8361283178519 },
+            { lat: 40.7481806338386, lng: 14.8380631402456 },
+            { lat: 40.7488314478887, lng: 14.8386307012894 },
+            { lat: 40.7505363154513, lng: 14.8410426329012 },
+            { lat: 40.7522535981954, lng: 14.8440949805267 },
+            { lat: 40.7525406710424, lng: 14.8447342502695 },
+            { lat: 40.752722700825, lng: 14.8456690980671 },
+            { lat: 40.7531148046686, lng: 14.8478719739021 },
+            { lat: 40.7569672387864, lng: 14.8469033932164 },
         ];
         // Construct the polygon.
-        var bermudaTriangle = new google.maps.Polygon({
-            paths: Roccapiemonte,
+        var limiteFisciano = new google.maps.Polygon({
+            paths: Fisciano,
             strokeColor: '#1439ff',
             strokeOpacity: 0.8,
             strokeWeight: 2,
             fillColor: '#1439ff',
-            fillOpacity: 0.03,
+            fillOpacity: 0.10,
         });
-        bermudaTriangle.setMap(map);
+        limiteFisciano.setMap(map);
     };
     MappaPage.prototype.showMap = function () {
         var location = new google.maps.LatLng(40.759082323356765, 14.691781673339584);

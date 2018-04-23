@@ -43,6 +43,7 @@ var AggiungicivicoPage = /** @class */ (function () {
         this.alertCtrl = alertCtrl;
         this.searchDUG = '';
         this.name = '';
+        this.alert = false;
         this.autocompleteItems = [];
         this.autocomplete = {
             query: ''
@@ -175,10 +176,7 @@ var AggiungicivicoPage = /** @class */ (function () {
     AggiungicivicoPage.prototype.chooseItem = function (item) {
         // this.selectedItems.push(item);
         this.searchDUG = '' + item.name.toUpperCase();
-        console.log(this.selectedItems);
-        console.log('provaaaaa ', this.searchDUG);
         this.filteredItems = [];
-        // this.geoCode(this.geo);//convert Address to lat and long
     };
     AggiungicivicoPage.prototype.assignCopy = function () {
         this.filteredItems = Object.assign([], this.selectedItems);
@@ -220,43 +218,48 @@ var AggiungicivicoPage = /** @class */ (function () {
     };
     AggiungicivicoPage.prototype.conferma = function () {
         var _this = this;
-        this.onIndirizzo("via della liberta");
-        var postParams = {
-            'LONGITUDINE': this.longitudine,
-            'LATITUDINE': this.latitudine,
-            'CODISTAT': '065052',
-            'NOMECOMUNE': this.paese,
-            'DUG': this.searchDUG,
-            'DENOMINAZIONE': this.denominazione,
-            'CIVICO': this.civico,
-            'ESPONENTE': null,
-            'PATHFOTOCIVICO': null,
-            'PATHFOTOABITAZIONE': null,
-            'EMAIL': null,
-            'CF_USER': null,
-            'CF_SUPERUSER': null,
-            'LONGITUDINE_ARR': null,
-            'LATITUDINE_ARR': null
-        };
-        var headers = {
-            'Content-Type': 'application/json'
-        };
-        this.http.post('http://tcnapp.altervista.org/script_tncapp/addCivico.php', postParams, headers)
-            .then(function (data) {
-            console.log(data.status);
-            console.log(data.data); // data received by server
-            console.log(data.headers);
-            var alert = _this.alertCtrl.create({
-                title: data.data,
-                buttons: ['Dismiss']
+        if (this.latitudine === '' || this.longitudine === '' || this.searchDUG === '' || this.denominazione === '') {
+            this.alert = true;
+        }
+        else {
+            this.onIndirizzo("via della liberta");
+            var postParams = {
+                'LONGITUDINE': this.longitudine,
+                'LATITUDINE': this.latitudine,
+                'CODISTAT': '065052',
+                'NOMECOMUNE': this.paese,
+                'DUG': this.searchDUG,
+                'DENOMINAZIONE': this.denominazione,
+                'CIVICO': this.civico,
+                'ESPONENTE': null,
+                'PATHFOTOCIVICO': null,
+                'PATHFOTOABITAZIONE': null,
+                'EMAIL': null,
+                'CF_USER': null,
+                'CF_SUPERUSER': null,
+                'LONGITUDINE_ARR': null,
+                'LATITUDINE_ARR': null
+            };
+            var headers = {
+                'Content-Type': 'application/json'
+            };
+            this.http.post('http://tcnapp.altervista.org/script_tncapp/addCivico.php', postParams, headers)
+                .then(function (data) {
+                console.log(data.status);
+                console.log(data.data); // data received by server
+                console.log(data.headers);
+                var alert = _this.alertCtrl.create({
+                    title: data.data,
+                    buttons: ['Dismiss']
+                });
+                alert.present();
+            })
+                .catch(function (error) {
+                console.log(error.status);
+                console.log(error.error); // error message as string
+                console.log(error.headers);
             });
-            alert.present();
-        })
-            .catch(function (error) {
-            console.log(error.status);
-            console.log(error.error); // error message as string
-            console.log(error.headers);
-        });
+        }
     };
     AggiungicivicoPage.prototype.onIndirizzo = function (indirizzo) {
         var i = 0;
@@ -272,13 +275,17 @@ var AggiungicivicoPage = /** @class */ (function () {
         prova = indirizzo.substring(j + 1);
         console.log(prova);
     };
+    AggiungicivicoPage.prototype.onAlert = function () {
+        this.alert = false;
+    };
     AggiungicivicoPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-aggiungicivico',template:/*ion-inline-start:"/Users/vincenzobevilacqua/Desktop/TNCapp/src/pages/aggiungicivico/aggiungicivico.html"*/'<!--\n  Generated template for the AggiungicivicoPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>aggiungicivico</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <ion-list>\n\n    <ion-item>\n      <ion-label floating>Latitudine</ion-label>\n      <ion-input type="text" [(ngModel)]="latitudine"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label floating>Longitudine</ion-label>\n      <ion-input type="text" [(ngModel)]="longitudine"></ion-input>\n    </ion-item>\n\n\n\n\n      <ion-list>\n<ion-item>\n      <ion-label >Search DUG</ion-label>\n</ion-item>\n          <ion-toolbar>\n              <ion-searchbar  [(ngModel)]="name" (input)="filterItem(name)" [showCancelButton]=\'true\'  (ionCancel)="dismiss()" (change)="onClear()"></ion-searchbar>\n          </ion-toolbar>\n          <ion-list>\n              <ion-item *ngFor="let item of filteredItems" tappable   (click)="chooseItem(item)">\n                  {{ item.name }}\n              </ion-item>\n\n          </ion-list>\n      </ion-list>\n\n\n\n\n      <ion-item>\n          <ion-label floating>DUG</ion-label>\n          <ion-input type="text" [(ngModel)]="searchDUG" name="DUG"></ion-input>\n      </ion-item>\n\n\n\n\n\n\n        <ion-item>\n            <ion-label floating>Denominazione</ion-label>\n        <ion-input type="text" [(ngModel)]="denominazione" name="denominazione"></ion-input>\n      </ion-item>\n\n\n      <ion-item>\n          <ion-label floating>Civico</ion-label>\n        <ion-input type="number" [(ngModel)]="civico" name="civico"></ion-input>\n      </ion-item>\n\n    <div padding>\n      <ion-row>\n        <ion-col>\n    <button ion-button color="primary" (click)="fotoCivico()" round>Foto civico</button>\n        </ion-col>\n        <ion-col>\n    <button ion-button color="primary" (click)="fotoCasa()" round>Foto casa</button>\n        </ion-col>\n      </ion-row>\n      <ion-row>\n        <ion-col>\n          <button ion-button color="danger" round>Annulla</button>\n        </ion-col>\n        <ion-col>\n          <button ion-button color="secondary" (click)="conferma()" round>Conferma</button>\n        </ion-col>\n      </ion-row>\n    </div>\n  </ion-list>\n</ion-content>\n'/*ion-inline-end:"/Users/vincenzobevilacqua/Desktop/TNCapp/src/pages/aggiungicivico/aggiungicivico.html"*/,
+            selector: 'page-aggiungicivico',template:/*ion-inline-start:"/Users/vincenzobevilacqua/Desktop/TNCapp/src/pages/aggiungicivico/aggiungicivico.html"*/'<!--\n  Generated template for the AggiungicivicoPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>aggiungicivico</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <ion-list>\n\n    <ion-item>\n      <ion-label floating>Latitudine</ion-label>\n      <ion-input type="text" [(ngModel)]="latitudine" (change)="onAlert()"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label floating>Longitudine</ion-label>\n      <ion-input type="text" [(ngModel)]="longitudine" (change)="onAlert()"></ion-input>\n    </ion-item>\n\n\n\n\n      <ion-list>\n<ion-item>\n      <ion-label >Search DUG</ion-label>\n</ion-item>\n          <ion-toolbar>\n              <ion-searchbar  [(ngModel)]="name" (input)="filterItem(name)" [showCancelButton]=\'true\'  (ionCancel)="dismiss()" (change)="onClear()"></ion-searchbar>\n          </ion-toolbar>\n          <ion-list>\n              <ion-item *ngFor="let item of filteredItems" tappable   (click)="chooseItem(item)">\n                  {{ item.name }}\n              </ion-item>\n\n          </ion-list>\n      </ion-list>\n\n\n\n\n      <ion-item>\n          <ion-label floating>DUG</ion-label>\n          <ion-input type="text" [(ngModel)]="searchDUG" name="DUG" (change)="onAlert()"></ion-input>\n      </ion-item>\n\n\n\n\n\n\n        <ion-item>\n            <ion-label floating>Denominazione</ion-label>\n        <ion-input type="text" [(ngModel)]="denominazione" name="denominazione" (change)="onAlert()"></ion-input>\n      </ion-item>\n\n\n      <ion-item>\n          <ion-label floating>Civico</ion-label>\n        <ion-input type="number" [(ngModel)]="civico" name="civico" (change)="onAlert()"></ion-input>\n      </ion-item>\n      <div #alert align="center" *ngIf="alert">\n          <label  style="color:blue">Riempire tutti i campi</label>\n      </div>\n    <div padding>\n      <ion-row>\n        <ion-col>\n    <button ion-button color="primary" (click)="fotoCivico()" round>Foto civico</button>\n        </ion-col>\n        <ion-col>\n    <button ion-button color="primary" (click)="fotoCasa()" round>Foto casa</button>\n        </ion-col>\n      </ion-row>\n      <ion-row>\n        <ion-col>\n          <button ion-button color="danger" round>Annulla</button>\n        </ion-col>\n        <ion-col>\n          <button ion-button color="secondary" (click)="conferma()" round>Conferma</button>\n        </ion-col>\n      </ion-row>\n    </div>\n  </ion-list>\n</ion-content>\n'/*ion-inline-end:"/Users/vincenzobevilacqua/Desktop/TNCapp/src/pages/aggiungicivico/aggiungicivico.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* ViewController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_camera__["a" /* Camera */], __WEBPACK_IMPORTED_MODULE_4__ionic_native_http__["a" /* HTTP */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_native_geocoder__["a" /* NativeGeocoder */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* ViewController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* ViewController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_2__ionic_native_camera__["a" /* Camera */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__ionic_native_camera__["a" /* Camera */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_4__ionic_native_http__["a" /* HTTP */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__ionic_native_http__["a" /* HTTP */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_3__ionic_native_native_geocoder__["a" /* NativeGeocoder */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__ionic_native_native_geocoder__["a" /* NativeGeocoder */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]) === "function" && _g || Object])
     ], AggiungicivicoPage);
     return AggiungicivicoPage;
+    var _a, _b, _c, _d, _e, _f, _g;
 }());
 
 //# sourceMappingURL=aggiungicivico.js.map
@@ -343,10 +350,9 @@ var SignupPage = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-signup',template:/*ion-inline-start:"/Users/vincenzobevilacqua/Desktop/TNCapp/src/pages/signup/signup.html"*/'<!--\n  Generated template for the SignupPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>signup</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content class="login-page">\n\n\n  <ion-list>\n    <ion-item>\n      <ion-input type="text" name="fullname" placeholder="Fullname"  [(ngModel)]="user.fullname" required (change)="onAlert()"></ion-input>\n    </ion-item>\n\n\n    <ion-item>\n      <ion-input type="text" [(ngModel)]="user.email" placeholder="Email" name="email" (change)="onAlert()"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-input type="text" [(ngModel)]="user.codiceF" placeholder="Codice Fiscale" name="codiceF" (change)="onAlert()"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-input type="text"  [(ngModel)]="user.telefono" placeholder="Telefono" name="telefono" (change)="onAlert()"></ion-input>\n    </ion-item>\n\n\n    <ion-item>\n      <ion-input type="password" [(ngModel)]="user.password" placeholder="Password" name="password" (change)="onAlert()"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-input type="password" placeholder="Conferma password" [(ngModel)]="user.confermaPassword" name="confermaPass" (change)="onAlert()"></ion-input>\n    </ion-item>\n\n\n  </ion-list>\n  <div #alert align="center" *ngIf="alert">\n    <label  style="color:blue">Riempire tutti i campi</label>\n  </div>\n  <div padding>\n    <ion-row responsive-sm>\n      <ion-col>\n        <button ion-button (click)="onAnnulla()" color="danger" block>Annulla</button>\n      </ion-col>\n      <ion-col>\n        <button ion-button (click)="onSignup()" color="secondary"  block>Conferma</button>\n      </ion-col>\n\n    </ion-row>\n  </div>\n\n\n</ion-content>\n'/*ion-inline-end:"/Users/vincenzobevilacqua/Desktop/TNCapp/src/pages/signup/signup.html"*/,
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */]) === "function" && _b || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */]])
     ], SignupPage);
     return SignupPage;
-    var _a, _b;
 }());
 
 //# sourceMappingURL=signup.js.map
@@ -1211,10 +1217,9 @@ var LoginPage = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-welcome',template:/*ion-inline-start:"/Users/vincenzobevilacqua/Desktop/TNCapp/src/pages/login/login.html"*/'<!--\n  Generated template for the LoginPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>login</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content scroll="false">\n  <div class="splash-bg"></div>\n  <div class="splash-info">\n    <div class="splash-logo"></div>\n    <div class="splash-intro">\n    TNC\n\n    </div>\n  </div>\n  <div padding>\n    <ion-list>\n      <ion-item>\n        <ion-input type="text" placeholder="Email" [(ngModel)]="user.email" name="email" #email></ion-input>\n      </ion-item>\n\n      <ion-item>\n        <ion-input type="password"  placeholder="Password" [(ngModel)]="user.password" name="password" #password></ion-input>\n      </ion-item>\n\n    </ion-list>\n    <div #alert align="center" *ngIf="alert">\n      <label  style="color:blue">Riempire tutti i campi</label>\n    </div>\n    <button ion-button block (click)="onLogin()"  color="secondary">Login</button>\n    <button ion-button block (click)="onSignup()">Registrati</button>\n\n  </div>\n</ion-content>\n'/*ion-inline-end:"/Users/vincenzobevilacqua/Desktop/TNCapp/src/pages/login/login.html"*/,
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__ionic_native_http__["a" /* HTTP */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__ionic_native_http__["a" /* HTTP */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]) === "function" && _d || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_http__["a" /* HTTP */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]])
     ], LoginPage);
     return LoginPage;
-    var _a, _b, _c, _d;
 }());
 
 //# sourceMappingURL=login.js.map
