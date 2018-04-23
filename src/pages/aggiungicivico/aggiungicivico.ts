@@ -25,9 +25,6 @@ export class AggiungicivicoPage {
   civico;
   denominazione;
   paese;
-  codicenazione;
-  nazione;
-  regione;
   codicepostale;
   provincia;
   stringa:any;
@@ -69,7 +66,7 @@ export class AggiungicivicoPage {
             {"id":25,"name":"Canton"},{"id":26,"name":"Cantone"},{"id":27,"name":"Cascina"},
             {"id":28,"name":"Case sparse"},{"id":29,"name":"Cavalcavia"},{"id":30,"name":"Centro Abitato"},
             {"id":31,"name":"Chiassetto"},{"id":32,"name":"Chiassino"},{"id":33,"name":"Chiasso"},
-            {"id":34,"name":"chiassuolo"},{"id":35,"name":"Castello"},
+            {"id":34,"name":"chiassuolo"},{"id":35,"name":"Castello"},{"id":36,"name":"Descrizione"},
             {"id":37,"name":"Circonvalazione"},{"id":38,"name":"Collegamento"},{"id":39,"name":"Complanare"},
             {"id":40,"name":"Contrà"},{"id":41,"name":"Contrada"},{"id":42,"name":"Cupa"},
             {"id":43,"name":"Discesa"},{"id":44,"name":"Emiciclo"},{"id":45,"name":"Esedra"},
@@ -152,33 +149,23 @@ export class AggiungicivicoPage {
 
       this.latitudine=this.navParams.get('latitudine');
       this.longitudine=this.navParams.get('longitudine');
-        this.nazione="ofsgdg";
-        this.codicenazione="";
+
        this.DUG="";
-      this.civico="";
        this.denominazione="";
        this.paese="";
-       this.nazione="";
-       this.regione="";
+
        this.codicepostale="";
        this.provincia="";
         this.nativeGeocoder.reverseGeocode(this.latitudine, this.longitudine)
             .then((result: NativeGeocoderReverseResult) => {
-                this.stringa='ciao '+JSON.stringify(result.countryName);
-                this.nazione=JSON.stringify(result);
                 let alert = this.alertCtrl.create({
                     title:this.stringa,
-                    subTitle:this.nazione,
                     buttons: ['Dismiss']
                 });
                 alert.present();
-                this.nazione=result[0].countryName;
-                this.codicenazione=result[0].countryCode;
-                this.paese=result[0].locality;
-
+                this.paese=result[0].locality.toUpperCase();
                 this.denominazione=result[0].thoroughfare;
                 this.codicepostale=result[0].postalCode;
-                this.regione=result[0].administrativeArea;
                 this.provincia=result[0].subAdministrativeArea;
             })
             .catch((error: any) => console.log(error));
@@ -270,46 +257,21 @@ onClear(){
       });
   }
 
-  /*conferma(){
-      this.nativeGeocoder.reverseGeocode(this.latitudine, this.longitudine)
-          .then((result: NativeGeocoderReverseResult) => {
-              this.stringa=JSON.stringify(result);
 
-              console.log(JSON.stringify(result));
-              let alert = this.alertCtrl.create({
-                  title: this.stringa,
-                  subTitle: '10% of battery remaining',
-                  buttons: ['Dismiss']
-              });
-              alert.present();
-              this.paese=JSON.stringify(result.locality);
-              this.nazione=JSON.stringify(result.countryName);
-
-              this.codicenazione=JSON.stringify(result.countryCode);
-              this.denominazione=JSON.stringify(result.thoroughfare);
-              this.codicepostale=JSON.stringify(result.postalCode);
-              this.regione=JSON.stringify(result.administrativeArea);
-              this.provincia=JSON.stringify(result.subAdministrativeArea);
-          })
-          .catch((error: any) => console.log(error));
-
-      this.nativeGeocoder.forwardGeocode('Berlin')
-          .then((coordinates: NativeGeocoderForwardResult) => console.log('The coordinates are latitude=' + coordinates.latitude + ' and longitude=' + coordinates.longitude))
-          .catch((error: any) => console.log(error));
-  }
-*/
   conferma(){
+      this.onIndirizzo("via della liberta");
       let postParams = {
            'LONGITUDINE':this.longitudine,
            'LATITUDINE':this.latitudine,
            'CODISTAT':'065052',
-           'NOMECOMUNE':this.paese.toUpperCase,
-           'DUG':this.searchDUG.toUpperCase,
-           'DENOMINAZIONE':this.denominazione.toUpperCase,
+           'NOMECOMUNE':this.paese,
+           'DUG':this.searchDUG,
+           'DENOMINAZIONE':this.denominazione,
            'CIVICO':this.civico,
            'ESPONENTE':null,
            'PATHFOTOCIVICO':null,
            'PATHFOTOABITAZIONE':null,
+          'EMAIL':null,
            'CF_USER':null,
            'CF_SUPERUSER':null,
            'LONGITUDINE_ARR':null,
@@ -327,7 +289,6 @@ onClear(){
               console.log(data.headers);
               let alert = this.alertCtrl.create({
                   title: data.data,
-                  subTitle: '10% of battery remaining',
                   buttons: ['Dismiss']
               });
               alert.present();
@@ -342,5 +303,26 @@ onClear(){
           });
   }
 
+
+
+    onIndirizzo(indirizzo:string){
+      var i=0;
+      var j=0;
+var prova='';
+var dug;
+        var indTot;
+        indTot=indirizzo.split(" ");
+       dug=indTot[0];
+       i=dug.length;
+       j=indTot.length;
+       console.log(i+" "+ j);
+       prova=indirizzo.substring(j+1);
+console.log(prova);
+
+
+
+
+
+    }
 
 }

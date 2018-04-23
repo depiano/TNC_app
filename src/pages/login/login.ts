@@ -21,11 +21,13 @@ import {ProfiloPage} from "../profilo/profilo";
 })
 export class LoginPage {
     user;
+    alert;
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private http: HTTP, public alertCtrl: AlertController) {
       sessionStorage.clear();
       this.user =  {email: '', password: ''};
+      this.alert=false;
 
   }
 
@@ -34,8 +36,8 @@ export class LoginPage {
         console.log('email: ', this.user.email);
         console.log('password: ', this.user.password);
         /*
-        if(this.user.email==='' || this.user.password===''){
-            //errore
+          if(this.user.email==='' || this.user.password===''){
+           this.alert=true;
         }
         else{
         */
@@ -87,6 +89,9 @@ export class LoginPage {
             });
         this.navCtrl.setRoot(ProfiloPage);
 
+    }
+    onAlert(){
+        this.alert=false;
     }
 
 }

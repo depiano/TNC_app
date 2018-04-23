@@ -18,7 +18,7 @@
   <div class="splash-info">
     <div class="splash-logo"></div>
     <div class="splash-intro">
-      Nome progetto GIS
+    TNC
 
     </div>
   </div>
@@ -33,6 +33,9 @@
       </ion-item>
 
     </ion-list>
+    <div #alert align="center" *ngIf="alert">
+      <label  style="color:blue">Riempire tutti i campi</label>
+    </div>
     <button ion-button block (click)="onLogin()"  color="secondary">Login</button>
     <button ion-button block (click)="onSignup()">Registrati</button>
 

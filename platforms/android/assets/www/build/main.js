@@ -43,6 +43,7 @@ var AggiungicivicoPage = /** @class */ (function () {
         this.alertCtrl = alertCtrl;
         this.searchDUG = '';
         this.name = '';
+        this.via = [];
         this.autocompleteItems = [];
         this.autocomplete = {
             query: ''
@@ -142,7 +143,6 @@ var AggiungicivicoPage = /** @class */ (function () {
         this.nazione = "ofsgdg";
         this.codicenazione = "";
         this.DUG = "";
-        this.civico = "";
         this.denominazione = "";
         this.paese = "";
         this.nazione = "";
@@ -166,6 +166,7 @@ var AggiungicivicoPage = /** @class */ (function () {
             _this.codicepostale = result[0].postalCode;
             _this.regione = result[0].administrativeArea;
             _this.provincia = result[0].subAdministrativeArea;
+            _this.via = _this.denominazione.split(" ");
         })
             .catch(function (error) { return console.log(error); });
     }
@@ -229,47 +230,20 @@ var AggiungicivicoPage = /** @class */ (function () {
             // Handle error
         });
     };
-    /*conferma(){
-        this.nativeGeocoder.reverseGeocode(this.latitudine, this.longitudine)
-            .then((result: NativeGeocoderReverseResult) => {
-                this.stringa=JSON.stringify(result);
-  
-                console.log(JSON.stringify(result));
-                let alert = this.alertCtrl.create({
-                    title: this.stringa,
-                    subTitle: '10% of battery remaining',
-                    buttons: ['Dismiss']
-                });
-                alert.present();
-                this.paese=JSON.stringify(result.locality);
-                this.nazione=JSON.stringify(result.countryName);
-  
-                this.codicenazione=JSON.stringify(result.countryCode);
-                this.denominazione=JSON.stringify(result.thoroughfare);
-                this.codicepostale=JSON.stringify(result.postalCode);
-                this.regione=JSON.stringify(result.administrativeArea);
-                this.provincia=JSON.stringify(result.subAdministrativeArea);
-            })
-            .catch((error: any) => console.log(error));
-  
-        this.nativeGeocoder.forwardGeocode('Berlin')
-            .then((coordinates: NativeGeocoderForwardResult) => console.log('The coordinates are latitude=' + coordinates.latitude + ' and longitude=' + coordinates.longitude))
-            .catch((error: any) => console.log(error));
-    }
-  */
     AggiungicivicoPage.prototype.conferma = function () {
         var _this = this;
         var postParams = {
             'LONGITUDINE': this.longitudine,
             'LATITUDINE': this.latitudine,
             'CODISTAT': '065052',
-            'NOMECOMUNE': this.paese.toUpperCase,
-            'DUG': this.searchDUG.toUpperCase,
-            'DENOMINAZIONE': this.denominazione.toUpperCase,
+            'NOMECOMUNE': this.paese,
+            'DUG': this.searchDUG,
+            'DENOMINAZIONE': this.via[1] + " " + this.via[2],
             'CIVICO': this.civico,
             'ESPONENTE': null,
             'PATHFOTOCIVICO': null,
             'PATHFOTOABITAZIONE': null,
+            'EMAIL': null,
             'CF_USER': null,
             'CF_SUPERUSER': null,
             'LONGITUDINE_ARR': null,
@@ -285,7 +259,6 @@ var AggiungicivicoPage = /** @class */ (function () {
             console.log(data.headers);
             var alert = _this.alertCtrl.create({
                 title: data.data,
-                subTitle: '10% of battery remaining',
                 buttons: ['Dismiss']
             });
             alert.present();
@@ -749,11 +722,11 @@ var map = {
 		6
 	],
 	"../pages/mappa/mappa.module": [
-		290,
+		289,
 		5
 	],
 	"../pages/modificaprofilo/modificaprofilo.module": [
-		289,
+		290,
 		4
 	],
 	"../pages/profilo/profilo.module": [
@@ -878,8 +851,8 @@ var AppModule = /** @class */ (function () {
                     links: [
                         { loadChildren: '../pages/aggiungicivico/aggiungicivico.module#AggiungicivicoPageModule', name: 'AggiungicivicoPage', segment: 'aggiungicivico', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/login/login.module#LoginPageModule', name: 'LoginPage', segment: 'login', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/modificaprofilo/modificaprofilo.module#ModificaprofiloPageModule', name: 'ModificaprofiloPage', segment: 'modificaprofilo', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/mappa/mappa.module#MappaPageModule', name: 'MappaPage', segment: 'mappa', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/modificaprofilo/modificaprofilo.module#ModificaprofiloPageModule', name: 'ModificaprofiloPage', segment: 'modificaprofilo', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/profilo/profilo.module#ProfiloPageModule', name: 'ProfiloPage', segment: 'profilo', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/signup/signup.module#SignupPageModule', name: 'SignupPage', segment: 'signup', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/visualizzacivico/visualizzacivico.module#VisualizzacivicoPageModule', name: 'VisualizzacivicoPage', segment: 'visualizzacivico', priority: 'low', defaultHistory: [] },
