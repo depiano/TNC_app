@@ -29,6 +29,8 @@ export class AggiungicivicoPage {
   codicepostale;
   provincia;
   stringa:any;
+  items;
+  esponente;
 
 
 
@@ -150,7 +152,7 @@ this.alert=false;
 
       this.latitudine=this.navParams.get('latitudine');
       this.longitudine=this.navParams.get('longitudine');
-
+      this.esponente="";
        this.DUG="";
        this.denominazione="";
        this.paese="";
@@ -159,11 +161,7 @@ this.alert=false;
        this.provincia="";
         this.nativeGeocoder.reverseGeocode(this.latitudine, this.longitudine)
             .then((result: NativeGeocoderReverseResult) => {
-                let alert = this.alertCtrl.create({
-                    title:this.stringa,
-                    buttons: ['Dismiss']
-                });
-                alert.present();
+
                 this.paese=result[0].locality.toUpperCase();
                 this.denominazione=result[0].thoroughfare;
                 this.codicepostale=result[0].postalCode;
@@ -261,7 +259,7 @@ onClear(){
 this.alert=true;
       }
       else {
-          this.onIndirizzo("via della liberta");
+
           let postParams = {
               'LONGITUDINE': this.longitudine,
               'LATITUDINE': this.latitudine,
@@ -270,14 +268,14 @@ this.alert=true;
               'DUG': this.searchDUG,
               'DENOMINAZIONE': this.denominazione,
               'CIVICO': this.civico,
-              'ESPONENTE': null,
-              'PATHFOTOCIVICO': null,
-              'PATHFOTOABITAZIONE': null,
-              'EMAIL': null,
-              'CF_USER': null,
-              'CF_SUPERUSER': null,
-              'LONGITUDINE_ARR': null,
-              'LATITUDINE_ARR': null
+              'ESPONENTE': 'NULL',
+              'PATHFOTOCIVICO': 'NULL',
+              'PATHFOTOABITAZIONE': 'NULL',
+              'EMAIL': 'NULL',
+              'CF_USER': 'NULL',
+              'CF_SUPERUSER': 'NULL',
+              'LONGITUDINE_ARR': 'NULL',
+              'LATITUDINE_ARR': 'NULL'
           }
 
           let headers = {
@@ -285,15 +283,15 @@ this.alert=true;
           };
           this.http.post('http://tcnapp.altervista.org/script_tncapp/addCivico.php', postParams, headers)
               .then(data => {
-
+                  this.items=JSON.parse(data.data);
                   console.log(data.status);
                   console.log(data.data); // data received by server
                   console.log(data.headers);
-                  let alert = this.alertCtrl.create({
+                 /* let alert = this.alertCtrl.create({
                       title: data.data,
                       buttons: ['Dismiss']
                   });
-                  alert.present();
+                  alert.present();*/
 
               })
               .catch(error => {
@@ -308,20 +306,9 @@ this.alert=true;
 
 
 
-    onIndirizzo(indirizzo:string){
-      var i=0;
-      var j=0;
-var prova='';
-var dug;
-        var indTot;
-        indTot=indirizzo.split(" ");
-       dug=indTot[0];
-       i=dug.length;
-       j=indTot.length;
-       console.log(i+" "+ j);
-       prova=indirizzo.substring(j+1);
-console.log(prova);
- }
+
+
+
 
     onAlert(){
         this.alert=false;

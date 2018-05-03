@@ -71,11 +71,11 @@ export class MappaPage {
         this.addMarker(location, map);
 
         var locations = [
-            ['Via Cardinal Dell Olio, n°34', 40.759421962401554,14.692081450942965, 4],
+           /* ['Via Cardinal Dell Olio, n°34', 40.759421962401554,14.692081450942965, 4],
             ['Via Rupe, n°13', 40.75958449497789, 14.692164897700309, 5],
             ['Via Kenney, n°12', 40.759761474604254, 14.69226503422658, 3],
             ['Via Kennedy, n°67', 40.75987587912256, 14.692322255408612, 2],
-            ['MVia Sant ANtonio Abate, n°3', 40.76014473358941, 14.692460537247712, 1]
+            ['MVia Sant ANtonio Abate, n°3', 40.76014473358941, 14.692460537247712, 1]*/
         ];
 
         var infowindow = new google.maps.InfoWindow();

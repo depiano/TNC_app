@@ -1,13 +1,8 @@
-<!--
-  Generated template for the LoginPage page.
 
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
   <ion-navbar>
-    <ion-title>login</ion-title>
+    <ion-title>TNCapp</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -18,26 +13,31 @@
   <div class="splash-info">
     <div class="splash-logo"></div>
     <div class="splash-intro">
-    TNC
+      TNC
 
     </div>
   </div>
   <div padding>
     <ion-list>
       <ion-item>
-        <ion-input type="text" placeholder="Email" [(ngModel)]="user.email" name="email" #email></ion-input>
+        <ion-input type="text" placeholder="Email" [(ngModel)]="user.email" name="email" #email (change)="onAlert()"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-input type="password"  placeholder="Password" [(ngModel)]="user.password" name="password" #password></ion-input>
+        <ion-input type="password"  placeholder="Password" [(ngModel)]="user.password" name="password" #password (change)="onAlert()"></ion-input>
       </ion-item>
 
     </ion-list>
+
     <div #alert align="center" *ngIf="alert">
       <label  style="color:blue">Riempire tutti i campi</label>
     </div>
-    <button ion-button block (click)="onLogin()"  color="secondary">Login</button>
-    <button ion-button block (click)="onSignup()">Registrati</button>
+    <div #alert align="center" *ngIf="error">
+      <label  style="color:blue">Utente non presente</label>
+    </div>
+
+    <button ion-button block (click)="onLogin()"  color="primary">Login</button>
+    <button ion-button block (click)="onSignup()"   color="primary">Registrati</button>
 
   </div>
 </ion-content>

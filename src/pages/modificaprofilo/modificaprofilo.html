@@ -10,46 +10,63 @@
     <button ion-button menuToggle>
     <ion-icon name="menu"></ion-icon>
   </button>
-    <ion-title>modificaprofilo</ion-title>
+    <ion-title>TNC - Profilo</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
+
 <ion-content padding class="speaker-detail">
   <div text-center>
-    <img src="assets/imgs/profilo.png" alt="Immagine profilo"><br>
+    <img src="assets/imgs/avatar.png" alt="Immagine profilo"><br>
 
     <ion-list>
       <ion-item>
-        <ion-input type="text" name="fullname"  placeholder="Fullname" disabled #fullname></ion-input>
+        <ion-label floating>Fullname</ion-label>
+        <ion-input type="text" name="fullname"  [(ngModel)]="user.fullname" [readonly]="true" #fullname></ion-input>
       </ion-item>
 
 
       <ion-item>
-        <ion-input type="text"  placeholder="Email" name="email" disabled #email></ion-input>
+        <ion-label floating>Email</ion-label>
+        <ion-input type="text"    [(ngModel)]="user.email" name="email" [readonly]="true" #email></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-input type="text"  placeholder="Telefono" name="telefono" #telefono></ion-input>
+        <ion-label floating>Codice Fiscale</ion-label>
+        <ion-input type="text" [(ngModel)]="user.codice" name="codice" [readonly]="true"></ion-input>
       </ion-item>
 
 
       <ion-item>
-        <ion-input type="password"  placeholder="Password" name="password" #password></ion-input>
+        <ion-label floating>Telefono</ion-label>
+        <ion-input type="text"   [(ngModel)]="user.telefono" name="telefono" #telefono (change)="onAlert()"></ion-input>
+      </ion-item>
+
+
+      <ion-item>
+        <ion-label floating>Password</ion-label>
+        <ion-input type="password"  [(ngModel)]="user.password" name="password" (change)="onAlert()" #password></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-input type="password"  placeholder="Conferma password" name="confpassword" #confpassword id="confpassword"></ion-input>
+        <ion-label floating>Conferma Password</ion-label>
+        <ion-input type="password"    [(ngModel)]="user.confermaPassword" name="confpassword"
+                   (change)="onAlert()" #confpassword id="confpassword"></ion-input>
       </ion-item>
 
 
     </ion-list>
 
+    <div #alert align="center" *ngIf="errorPass">
+      <label  style="color:blue">Le Password non corrispondono</label>
+    </div>
+
     <div padding>
       <ion-row responsive-sm>
         <ion-col>
-          <button ion-button (click)="onSignup()" type="submit" block>Conferma</button>
+          <button ion-button (click)="onConferma()" type="submit" block>Conferma</button>
         </ion-col>
         <ion-col>
           <button ion-button (click)="onAnnulla()" block>Annulla</button>

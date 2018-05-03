@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import {AlertController, NavController} from 'ionic-angular';
+import {AlertController, NavController, NavParams} from 'ionic-angular';
 import {MappaPage} from "../mappa/mappa";
 import {VisualizzacivicoPage} from "../visualizzacivico/visualizzacivico";
-import {HttpClient} from "@angular/common/http";
 import {ProfiloPage} from "../profilo/profilo";
 import {HTTP} from "@ionic-native/http";
 
@@ -13,25 +12,36 @@ import {HTTP} from "@ionic-native/http";
 export class HomePage {
     user;
     items : any;
+public fullname;
+public codice;
+public email;
+sessione;
 
-  constructor(private http: HTTP, public navCtrl: NavController, public alertCtrl: AlertController) {
-      this.user =  {email: '', password: ''};
-      this.send();
+  constructor(private http: HTTP, public navCtrl: NavController, public alertCtrl: AlertController, public   navParams: NavParams ) {
+     this.sessione=sessionStorage.getItem('sessionCodice');
+      this.user =  {email: '', password: '',fullname: sessionStorage.getItem('sessionFullname')};
+      this.codice=navParams.get ( "codiceFiscale" ) ;
+      this.email= navParams.get ( "email" ) ;
+
   }
+
+    ionViewDidLoad() {
+       this.send();
+    }
 
   aggiungiCivico(){
       this.navCtrl.setRoot(MappaPage);
   }
 
-  visualizzaCivico(item){
-     this.navCtrl.push(VisualizzacivicoPage, {item: item});
+  visualizzaCivico(lat,long){
+     this.navCtrl.push(VisualizzacivicoPage, {latitudine: lat,longitudine: long});
   }
 
     send(){
 
         let postParams = {
-            'email': this.user.email,
-            'password': this.user.password
+            'CF':this.sessione,
+
         }
 
         let datas = {
@@ -42,7 +52,7 @@ export class HomePage {
         let headers = {
             'Content-Type': 'application/json'
         };
-        this.http.post('http://tcnapp.altervista.org/script_tncweb/prova.php', postParams, headers)
+        this.http.post('http://tcnapp.altervista.org/script_tncapp/home.php', postParams, headers)
             .then(data => {
 
                 console.log(data.status);
@@ -50,6 +60,7 @@ export class HomePage {
                 console.log(data.headers);
                 this.items=JSON.parse(data.data);
                 this.items=this.items.result;
+
 
             })
             .catch(error => {

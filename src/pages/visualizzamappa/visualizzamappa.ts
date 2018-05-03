@@ -1,18 +1,14 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
-import { NativeGeocoder, NativeGeocoderReverseResult, NativeGeocoderForwardResult } from '@ionic-native/native-geocoder';
+import { NativeGeocoder} from '@ionic-native/native-geocoder';
+import {HTTP} from "@ionic-native/http";
 
 
 
 
 declare var google: any;
 
-/**
- * Generated class for the VisualizzamappaPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+
 
 @IonicPage()
 @Component({
@@ -21,18 +17,117 @@ declare var google: any;
 })
 export class VisualizzamappaPage {
     @ViewChild('map') mapRef: ElementRef;
-    locations: any;
+   locations: Array<any> = [];
     stringa: any;
+    items: any;
+    errore:any;
+    dug:any;
+    civico:any;
+    denominazione:any;
+    lat:any;
+    long:any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private nativeGeocoder: NativeGeocoder, public alertCtrl: AlertController) {
+    map;
+    infowindow;
+
+
+
+  constructor(public navCtrl: NavController, public navParams: NavParams,private nativeGeocoder: NativeGeocoder,
+              public alertCtrl: AlertController, private http: HTTP) {
 
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad VisualizzamappaPage');
-      this.showMap();
+    this.showMap();
+      this.send();
+
 
   }
+
+
+
+
+    send(){
+
+        let postParams = {
+            'CODISTAT': '065052'
+
+        }
+
+        let datas = {
+            'Action': 'Login',
+            'UserName': 'bla',
+            'Password': 'blabla'
+        };
+        let headers = {
+            'Content-Type': 'application/json'
+        };
+        this.http.post('http://tcnapp.altervista.org/script_tncapp/visualizzaMappa.php', postParams, headers)
+            .then(data => {
+
+
+                this.items=JSON.parse(data.data);
+                this.errore= this.items.ERROR;
+                this.items=this.items.RESULT;
+
+
+                var infowindow = new google.maps.InfoWindow();
+                var  i,marker;
+
+                for (i = 0; i < this.items.length; i++) {
+                    var counter = this.items[i];
+                    marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(this.items[i].LATITUDINE, this.items[i].LONGITUDINE),
+                        map: this.map
+
+
+                    });
+
+
+
+
+                    google.maps.event.addListener(marker, 'click', (function (marker, i) {
+                        return function () {
+                            infowindow.setContent('indice '+ " "+ i+" "+counter.DUG+ counter.DENOMINAZIONE+" "+counter.CIVICO);
+                            infowindow.open(this.map, marker);
+                        }
+                    })(marker, i));
+
+                }
+                    /*  giusto
+                      for (var i = 0; i < this.items.length; i++) {
+                            var counter = this.items[i];
+
+
+                            var myLatLng = {lat: parseFloat(counter.LATITUDINE), lng: parseFloat(counter.LONGITUDINE)};
+
+                           this.marker = new google.maps.Marker({
+                                position: myLatLng,
+                                map: this.map,
+                                title: counter.DENOMINAZIONE,
+                            });
+
+
+
+                  }*/
+
+
+
+  })
+            .catch(error => {
+
+                console.log(error.status);
+                console.log(error.error); // error message as string
+                console.log(error.headers);
+
+            });
+
+    }
+
+
+
+
     showMap(){
         const location= new google.maps.LatLng(40.7731935, 14.796560799999952);
 
@@ -41,11 +136,15 @@ export class VisualizzamappaPage {
             center: location
 
         }
-        const map= new google.maps.Map(this.mapRef.nativeElement, options);
+        this.map= new google.maps.Map(this.mapRef.nativeElement, options);
+
+
+
+
        // this.addMarker(location, map);
 
-        var locations = [
-           // ['Via Cardinal Dell Olio, n°34', 40.759421962401554,14.692081450942965, 4],
+    /*  var locations = [
+          ['Via Cardinal Dell Olio, n°34', 40.7777896012147,14.7583025077829, 4]
           //  ['Via Rupe, n°13', 40.75958449497789, 14.692164897700309, 5],
          //   ['Via Kenney, n°12', 40.759761474604254, 14.69226503422658, 3],
            // ['Via Kennedy, n°67', 40.75987587912256, 14.692322255408612, 2],
@@ -55,6 +154,7 @@ export class VisualizzamappaPage {
         var infowindow = new google.maps.InfoWindow();
 
         var marker, i;
+
 
         for (i = 0; i < locations.length; i++) {
             marker = new google.maps.Marker({
@@ -69,7 +169,7 @@ export class VisualizzamappaPage {
                 }
             })(marker, i));
         }
-
+        */
         var Fisciano = [
             {lat:40.7569672387864, lng:14.8469033932164},
             {lat:40.7548932018406, lng:14.8440531838236},
@@ -193,27 +293,23 @@ export class VisualizzamappaPage {
             fillColor: '#1439ff',
             fillOpacity: 0.10,
         });
-        limiteFisciano.setMap(map);
+        limiteFisciano.setMap(this.map);
 
 
-        this.nativeGeocoder.reverseGeocode(40.760221574960845, 14.6925106044672026)
-            .then((result: NativeGeocoderReverseResult) => {
-                console.log(JSON.stringify(result));
-                this.stringa=JSON.stringify(result);
-                let alert = this.alertCtrl.create({
-                    title: this.stringa,
-                    subTitle: '10% of battery remaining',
-                    buttons: ['Dismiss']
-                });
-                alert.present();
-            })
-            .catch((error: any) => console.log(error));
+        /* this.nativeGeocoder.reverseGeocode(40.760221574960845, 14.6925106044672026)
+           .then((result: NativeGeocoderReverseResult) => {
+               console.log(JSON.stringify(result));
+               this.stringa=JSON.stringify(result);
+           })
+           .catch((error: any) => console.log(error));
 
-        this.nativeGeocoder.forwardGeocode('Berlin')
-            .then((coordinates: NativeGeocoderForwardResult) => console.log('The coordinates are latitude=' + coordinates.latitude + ' and longitude=' + coordinates.longitude))
-            .catch((error: any) => console.log(error));
+     this.nativeGeocoder.forwardGeocode('Berlin')
+           .then((coordinates: NativeGeocoderForwardResult) => console.log('The coordinates are latitude=' + coordinates.latitude + ' and longitude=' + coordinates.longitude))
+           .catch((error: any) => console.log(error));*/
 
     }
+
+
 
     }
 

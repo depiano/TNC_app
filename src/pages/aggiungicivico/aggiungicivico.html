@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>aggiungicivico</ion-title>
+    <ion-title>TNC - Censimento</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -26,13 +26,22 @@
       <ion-input type="text" [(ngModel)]="longitudine" (change)="onAlert()"></ion-input>
     </ion-item>
 
+      <ion-item>
+          <ion-label floating>Suggerimento Google maps</ion-label>
+          <ion-input type="text" [(ngModel)]="denominazione" name="denominazione" (change)="onAlert()"></ion-input>
+      </ion-item>
 
 
 
       <ion-list>
-<ion-item>
-      <ion-label >Search DUG</ion-label>
+
+
+
+          <ion-item>
+      <ion-label >DUG disponibili</ion-label>
 </ion-item>
+
+
           <ion-toolbar>
               <ion-searchbar  [(ngModel)]="name" (input)="filterItem(name)" [showCancelButton]='true'  (ionCancel)="dismiss()" (change)="onClear()"></ion-searchbar>
           </ion-toolbar>
@@ -55,17 +64,20 @@
 
 
 
-
-
-        <ion-item>
-            <ion-label floating>Denominazione</ion-label>
-        <ion-input type="text" [(ngModel)]="denominazione" name="denominazione" (change)="onAlert()"></ion-input>
+      <ion-item>
+          <ion-label floating>Denominazione</ion-label>
+          <ion-input type="number" [(ngModel)]="denominazione" name="civico" (change)="onAlert()"></ion-input>
       </ion-item>
 
 
       <ion-item>
           <ion-label floating>Civico</ion-label>
         <ion-input type="number" [(ngModel)]="civico" name="civico" (change)="onAlert()"></ion-input>
+      </ion-item>
+
+      <ion-item>
+          <ion-label floating>Esponente</ion-label>
+          <ion-input type="number" [(ngModel)]="esponente" name="civico" (change)="onAlert()"></ion-input>
       </ion-item>
       <div #alert align="center" *ngIf="alert">
           <label  style="color:blue">Riempire tutti i campi</label>
@@ -81,10 +93,10 @@
       </ion-row>
       <ion-row>
         <ion-col>
-          <button ion-button color="danger" round>Annulla</button>
+          <button ion-button color="primary" round>Annulla</button>
         </ion-col>
         <ion-col>
-          <button ion-button color="secondary" (click)="conferma()" round>Conferma</button>
+          <button ion-button color="primary" (click)="conferma()" round>Conferma</button>
         </ion-col>
       </ion-row>
     </div>

@@ -23,7 +23,7 @@
 
 
     <ion-item>
-      <ion-input type="text" [(ngModel)]="user.email" placeholder="Email" name="email" (change)="onAlert()"></ion-input>
+      <ion-input type="text"  email [(ngModel)]="user.email" placeholder="Email" name="email" (change)="onAlert()"></ion-input>
     </ion-item>
 
     <ion-item>
@@ -45,8 +45,18 @@
 
 
   </ion-list>
-  <div #alert align="center" *ngIf="alert">
+  <div #alert1 align="center" *ngIf="alert">
     <label  style="color:blue">Riempire tutti i campi</label>
+  </div>
+
+  <div #alert2 align="center" *ngIf="errorPass">
+    <label  style="color:blue">Le Password non corrispondono</label>
+  </div>
+  <div #alert3 align="center" *ngIf="presente">
+    <label  style="color:blue">Utente già  registrato</label>
+  </div>
+  <div #alert4 align="center" *ngIf="codice">
+    <label  style="color:blue">Controllare Codice Fiscale</label>
   </div>
   <div padding>
     <ion-row responsive-sm>

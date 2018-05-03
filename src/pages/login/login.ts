@@ -2,17 +2,9 @@ import { Component } from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {HomePage} from "../home/home";
 import {SignupPage} from "../signup/signup";
-import {Observable} from "rxjs/Observable";
-import {RequestOptions} from "@angular/http";
-import {HttpClient} from "@angular/common/http";
 import { HTTP } from '@ionic-native/http';
-import {ProfiloPage} from "../profilo/profilo";
-/**
- * Generated class for the LoginPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+
+
 
 @IonicPage()
 @Component({
@@ -21,30 +13,30 @@ import {ProfiloPage} from "../profilo/profilo";
 })
 export class LoginPage {
     user;
-    alert;
+    items: any;
+    errore: any;
+    error;
+    alert=false;
+    fullName;
+    e_mail;
+    codice;
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private http: HTTP, public alertCtrl: AlertController) {
       sessionStorage.clear();
       this.user =  {email: '', password: ''};
-      this.alert=false;
-
+this.error=false;
   }
 
     onLogin() {
-        //this.navCtrl.setRoot(HomePage);
-        console.log('email: ', this.user.email);
-        console.log('password: ', this.user.password);
-        /*
-          if(this.user.email==='' || this.user.password===''){
-           this.alert=true;
+        if(this.user.email==='' || this.user.password===''){
+        this.alert=true;
         }
         else{
-        */
+
             this.send();
-            /*
+
         }
-        */
     }
 
     onSignup() {
@@ -52,7 +44,7 @@ export class LoginPage {
     }
 
     send(){
-
+        sessionStorage.clear();
         let postParams = {
             'email': this.user.email,
             'password': this.user.password
@@ -66,18 +58,32 @@ export class LoginPage {
         let headers = {
             'Content-Type': 'application/json'
         };
-        this.http.post('http://tcnapp.altervista.org/script_tncweb/login.php', postParams, headers)
+        this.http.post('http://tcnapp.altervista.org/script_tncapp/login.php', postParams, headers)
             .then(data => {
 
-                console.log(data.status);
-                console.log(data.data); // data received by server
-                console.log(data.headers);
-                let alert = this.alertCtrl.create({
-                    title: data.data,
-                    subTitle: data.data,
-                    buttons: ['Dismiss']
-                });
-                alert.present();
+
+                this.items=JSON.parse(data.data);
+                this.errore= this.items.ERROR;
+               this.fullName=this.items.RESULT.FULLNAME;
+                this.codice=this.items.RESULT.CF;
+                this.e_mail=this.items.RESULT.EMAIL;
+
+
+    if(this.errore==='none'){
+
+        localStorage.setItem('isLoggedin', 'true');
+        sessionStorage.setItem('sessionCodice' , '' + this.codice);
+        sessionStorage.setItem('sessionFullname' , '' + this.fullName);
+         this.navCtrl.setRoot(HomePage,{fullname:this.fullName,codiceFiscale:this.codice,
+         email:this.e_mail});
+    }
+    else{
+        if(this.errore==='yes'){
+            this.error=true;
+        }
+
+    }
+
 
             })
             .catch(error => {
@@ -87,11 +93,13 @@ export class LoginPage {
                 console.log(error.headers);
 
             });
-        this.navCtrl.setRoot(ProfiloPage);
+
 
     }
+
     onAlert(){
         this.alert=false;
+        this.error=false;
     }
 
 }
