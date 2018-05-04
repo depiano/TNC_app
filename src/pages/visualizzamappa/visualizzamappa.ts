@@ -26,6 +26,7 @@ export class VisualizzamappaPage {
     denominazione:any;
     lat:any;
     long:any;
+    prova:any;
 
     map;
     infowindow;
@@ -40,7 +41,7 @@ export class VisualizzamappaPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad VisualizzamappaPage');
     this.showMap();
-      this.send();
+
 
 
   }
@@ -73,6 +74,7 @@ export class VisualizzamappaPage {
 
 
                 var infowindow = new google.maps.InfoWindow();
+
                 var  i,marker;
 
                 for (i = 0; i < this.items.length; i++) {
@@ -87,12 +89,30 @@ export class VisualizzamappaPage {
 
 
 
-                    google.maps.event.addListener(marker, 'click', (function (marker, i) {
-                        return function () {
-                            infowindow.setContent('indice '+ " "+ i+" "+counter.DUG+ counter.DENOMINAZIONE+" "+counter.CIVICO);
+                 /*   let alert = this.alertCtrl.create({
+                        title: "marcatore",
+                        subTitle:'',
+                        buttons: ['Dismiss']
+                    });
+                    alert.present();*/
+
+
+
+                    google.maps.event.addListener(marker, 'click', (function(marker,counter) {
+                        return function() {
+                              infowindow.setContent(+counter.DUG+" "+ counter.DENOMINAZIONE+" "+counter.CIVICO);
+
+
                             infowindow.open(this.map, marker);
+
+
+
+
+
                         }
-                    })(marker, i));
+                    })(marker, counter));
+
+
 
                 }
                     /*  giusto
@@ -143,12 +163,12 @@ export class VisualizzamappaPage {
 
        // this.addMarker(location, map);
 
-    /*  var locations = [
-          ['Via Cardinal Dell Olio, n°34', 40.7777896012147,14.7583025077829, 4]
-          //  ['Via Rupe, n°13', 40.75958449497789, 14.692164897700309, 5],
-         //   ['Via Kenney, n°12', 40.759761474604254, 14.69226503422658, 3],
-           // ['Via Kennedy, n°67', 40.75987587912256, 14.692322255408612, 2],
-         //   ['MVia Sant ANtonio Abate, n°3', 40.76014473358941, 14.692460537247712, 1]
+     /* var locations = [
+          ['Via Cardinal Dell Olio, n°34', 40.7777896012147,14.7583025077829, 4],
+            ['Via Rupe, n°13', 40.75958449497789, 14.692164897700309, 5],
+           ['Via Kenney, n°12', 40.759761474604254, 14.69226503422658, 3],
+            ['Via Kennedy, n°67', 40.75987587912256, 14.692322255408612, 2],
+            ['MVia Sant ANtonio Abate, n°3', 40.76014473358941, 14.692460537247712, 1]
         ];
 
         var infowindow = new google.maps.InfoWindow();
@@ -159,17 +179,17 @@ export class VisualizzamappaPage {
         for (i = 0; i < locations.length; i++) {
             marker = new google.maps.Marker({
                 position: new google.maps.LatLng(locations[i][1], locations[i][2]),
-                map: map
+                map: this.map
             });
 
             google.maps.event.addListener(marker, 'click', (function(marker, i) {
                 return function() {
                     infowindow.setContent(locations[i][0]);
-                    infowindow.open(map, marker);
+                    infowindow.open(this.map, marker);
                 }
             })(marker, i));
         }
-        */
+*/
         var Fisciano = [
             {lat:40.7569672387864, lng:14.8469033932164},
             {lat:40.7548932018406, lng:14.8440531838236},
@@ -306,6 +326,7 @@ export class VisualizzamappaPage {
      this.nativeGeocoder.forwardGeocode('Berlin')
            .then((coordinates: NativeGeocoderForwardResult) => console.log('The coordinates are latitude=' + coordinates.latitude + ' and longitude=' + coordinates.longitude))
            .catch((error: any) => console.log(error));*/
+        this.send();
 
     }
 

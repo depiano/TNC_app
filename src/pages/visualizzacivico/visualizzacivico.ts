@@ -26,6 +26,7 @@ errore: any;
     civico:any;
     denominazione:any;
     paese:any;
+    esponente: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private http: HTTP, public alertCtrl: AlertController) {
       this.latitudine=  navParams.get ( "latitudine" ) ;
@@ -101,6 +102,9 @@ errore: any;
                         this.dug=this.items.RESULT.DUG;
                         this.denominazione=this.items.RESULT.DENOMINAZIONE;
                         this.civico=this.items.RESULT.CIVICO;
+                        this.esponente=""+this.items.RESULT.ESPONENTE;
+                     
+
                     }
 
 

@@ -363,6 +363,7 @@ var VisualizzacivicoPage = /** @class */ (function () {
                 _this.dug = _this.items.RESULT.DUG;
                 _this.denominazione = _this.items.RESULT.DENOMINAZIONE;
                 _this.civico = _this.items.RESULT.CIVICO;
+                _this.esponente = "" + _this.items.RESULT.ESPONENTE;
             }
         })
             .catch(function (error) {
@@ -377,7 +378,7 @@ var VisualizzacivicoPage = /** @class */ (function () {
     ], VisualizzacivicoPage.prototype, "mapRef", void 0);
     VisualizzacivicoPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-visualizzacivico',template:/*ion-inline-start:"/Users/vincenzobevilacqua/Desktop/TNCapp/src/pages/visualizzacivico/visualizzacivico.html"*/'<!--\n  Generated template for the VisualizzacivicoPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>visualizzacivico</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <div #map id="map"></div>\n  <ion-row>\n    <ion-col>\n      <img src="assets/imgs/numerocivico.png" alt="Immagine profilo">\n    </ion-col>\n    <ion-col>\n      <img src="assets/imgs/casa.png" alt="Immagine profilo">\n    </ion-col>\n  </ion-row>\n  <ion-list>\n\n    <ion-item>\n      <ion-label floating>Latitudine</ion-label>\n      <ion-input type="text" [(ngModel)]="latitudine" [readonly]="true"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label floating>Longitudine</ion-label>\n      <ion-input type="text" [(ngModel)]="longitudine" [readonly]="true"></ion-input>\n    </ion-item>\n   <!-- <ion-item>\n      <ion-label floating>Regione</ion-label>\n      <ion-input type="text" [(ngModel)]="regione" [readonly]="true"></ion-input>\n    </ion-item>\n    <ion-item>\n      <ion-label floating>Provincia</ion-label>\n      <ion-input type="text" [(ngModel)]="provincia" [readonly]="true"></ion-input>\n    </ion-item>-->\n    <ion-item>\n      <ion-label floating>Comune</ion-label>\n      <ion-input type="text" [(ngModel)]="paese" [readonly]="true"></ion-input>\n    </ion-item>\n    <ion-item>\n      <ion-label floating>DUG</ion-label>\n      <ion-input type="text" [(ngModel)]="dug" [readonly]="true"></ion-input>\n    </ion-item>\n    <ion-item>\n      <ion-label floating>Denominazione</ion-label>\n      <ion-input type="text" [(ngModel)]="denominazione" [readonly]="true"></ion-input>\n    </ion-item>\n    <ion-item>\n      <ion-label floating>Civico</ion-label>\n      <ion-input type="number" [(ngModel)]="civico" [readonly]="true"></ion-input>\n    </ion-item>\n    <!--  <div padding>\n\n      <ion-row>\n         <ion-col>\n           <button ion-button color="danger" (click)="elimina()" round>Elimina</button>\n         </ion-col>\n         <ion-col>\n           <button ion-button color="secondary" (click)="modificaCivico()" round>Modifica</button>\n         </ion-col>\n       </ion-row>\n    </div>\n    -->\n  </ion-list>\n</ion-content>\n\n'/*ion-inline-end:"/Users/vincenzobevilacqua/Desktop/TNCapp/src/pages/visualizzacivico/visualizzacivico.html"*/,
+            selector: 'page-visualizzacivico',template:/*ion-inline-start:"/Users/vincenzobevilacqua/Desktop/TNCapp/src/pages/visualizzacivico/visualizzacivico.html"*/'<!--\n  Generated template for the VisualizzacivicoPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>visualizzacivico</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <div #map id="map"></div>\n  <ion-row>\n    <ion-col>\n      <img src="assets/imgs/numerocivico.png" alt="Immagine profilo">\n    </ion-col>\n    <ion-col>\n      <img src="assets/imgs/casa.png" alt="Immagine profilo">\n    </ion-col>\n  </ion-row>\n  <ion-list>\n\n    <ion-item>\n      <ion-label floating>Latitudine</ion-label>\n      <ion-input type="text" [(ngModel)]="latitudine" [readonly]="true"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label floating>Longitudine</ion-label>\n      <ion-input type="text" [(ngModel)]="longitudine" [readonly]="true"></ion-input>\n    </ion-item>\n   <!-- <ion-item>\n      <ion-label floating>Regione</ion-label>\n      <ion-input type="text" [(ngModel)]="regione" [readonly]="true"></ion-input>\n    </ion-item>\n    <ion-item>\n      <ion-label floating>Provincia</ion-label>\n      <ion-input type="text" [(ngModel)]="provincia" [readonly]="true"></ion-input>\n    </ion-item>-->\n    <ion-item>\n      <ion-label floating>Comune</ion-label>\n      <ion-input type="text" [(ngModel)]="paese" [readonly]="true"></ion-input>\n    </ion-item>\n    <ion-item>\n      <ion-label floating>DUG</ion-label>\n      <ion-input type="text" [(ngModel)]="dug" [readonly]="true"></ion-input>\n    </ion-item>\n    <ion-item>\n      <ion-label floating>Denominazione</ion-label>\n      <ion-input type="text" [(ngModel)]="denominazione" [readonly]="true"></ion-input>\n    </ion-item>\n    <ion-item>\n      <ion-label floating>Civico</ion-label>\n      <ion-input type="number" [(ngModel)]="civico" [readonly]="true"></ion-input>\n    </ion-item>\n    <ion-item>\n      <ion-label floating>Esponente</ion-label>\n      <ion-input type="text" [(ngModel)]="esponente" [readonly]="true"></ion-input>\n    </ion-item>\n\n    <!--  <div padding>\n\n      <ion-row>\n         <ion-col>\n           <button ion-button color="danger" (click)="elimina()" round>Elimina</button>\n         </ion-col>\n         <ion-col>\n           <button ion-button color="secondary" (click)="modificaCivico()" round>Modifica</button>\n         </ion-col>\n       </ion-row>\n    </div>\n    -->\n  </ion-list>\n</ion-content>\n\n'/*ion-inline-end:"/Users/vincenzobevilacqua/Desktop/TNCapp/src/pages/visualizzacivico/visualizzacivico.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_http__["a" /* HTTP */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]])
     ], VisualizzacivicoPage);
@@ -652,7 +653,6 @@ var VisualizzamappaPage = /** @class */ (function () {
     VisualizzamappaPage.prototype.ionViewDidLoad = function () {
         console.log('ionViewDidLoad VisualizzamappaPage');
         this.showMap();
-        this.send();
     };
     VisualizzamappaPage.prototype.send = function () {
         var _this = this;
@@ -680,12 +680,18 @@ var VisualizzamappaPage = /** @class */ (function () {
                     position: new google.maps.LatLng(_this.items[i].LATITUDINE, _this.items[i].LONGITUDINE),
                     map: _this.map
                 });
-                google.maps.event.addListener(marker, 'click', (function (marker, i) {
+                /*   let alert = this.alertCtrl.create({
+                       title: "marcatore",
+                       subTitle:'',
+                       buttons: ['Dismiss']
+                   });
+                   alert.present();*/
+                google.maps.event.addListener(marker, 'click', (function (marker, counter) {
                     return function () {
-                        infowindow.setContent('indice ' + " " + i + " " + counter.DUG + counter.DENOMINAZIONE + " " + counter.CIVICO);
+                        infowindow.setContent(+counter.DUG + " " + counter.DENOMINAZIONE + " " + counter.CIVICO);
                         infowindow.open(this.map, marker);
                     };
-                })(marker, i));
+                })(marker, counter));
             }
             /*  giusto
               for (var i = 0; i < this.items.length; i++) {
@@ -718,33 +724,33 @@ var VisualizzamappaPage = /** @class */ (function () {
         };
         this.map = new google.maps.Map(this.mapRef.nativeElement, options);
         // this.addMarker(location, map);
-        /*  var locations = [
-              ['Via Cardinal Dell Olio, n°34', 40.7777896012147,14.7583025077829, 4]
-              //  ['Via Rupe, n°13', 40.75958449497789, 14.692164897700309, 5],
-             //   ['Via Kenney, n°12', 40.759761474604254, 14.69226503422658, 3],
-               // ['Via Kennedy, n°67', 40.75987587912256, 14.692322255408612, 2],
-             //   ['MVia Sant ANtonio Abate, n°3', 40.76014473358941, 14.692460537247712, 1]
-            ];
-    
-            var infowindow = new google.maps.InfoWindow();
-    
-            var marker, i;
-    
-    
-            for (i = 0; i < locations.length; i++) {
-                marker = new google.maps.Marker({
-                    position: new google.maps.LatLng(locations[i][1], locations[i][2]),
-                    map: map
-                });
-    
-                google.maps.event.addListener(marker, 'click', (function(marker, i) {
-                    return function() {
-                        infowindow.setContent(locations[i][0]);
-                        infowindow.open(map, marker);
-                    }
-                })(marker, i));
-            }
-            */
+        /* var locations = [
+             ['Via Cardinal Dell Olio, n°34', 40.7777896012147,14.7583025077829, 4],
+               ['Via Rupe, n°13', 40.75958449497789, 14.692164897700309, 5],
+              ['Via Kenney, n°12', 40.759761474604254, 14.69226503422658, 3],
+               ['Via Kennedy, n°67', 40.75987587912256, 14.692322255408612, 2],
+               ['MVia Sant ANtonio Abate, n°3', 40.76014473358941, 14.692460537247712, 1]
+           ];
+   
+           var infowindow = new google.maps.InfoWindow();
+   
+           var marker, i;
+   
+   
+           for (i = 0; i < locations.length; i++) {
+               marker = new google.maps.Marker({
+                   position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+                   map: this.map
+               });
+   
+               google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                   return function() {
+                       infowindow.setContent(locations[i][0]);
+                       infowindow.open(this.map, marker);
+                   }
+               })(marker, i));
+           }
+   */
         var Fisciano = [
             { lat: 40.7569672387864, lng: 14.8469033932164 },
             { lat: 40.7548932018406, lng: 14.8440531838236 },
@@ -875,6 +881,7 @@ var VisualizzamappaPage = /** @class */ (function () {
      this.nativeGeocoder.forwardGeocode('Berlin')
            .then((coordinates: NativeGeocoderForwardResult) => console.log('The coordinates are latitude=' + coordinates.latitude + ' and longitude=' + coordinates.longitude))
            .catch((error: any) => console.log(error));*/
+        this.send();
     };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* ViewChild */])('map'),
