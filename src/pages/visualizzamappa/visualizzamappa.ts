@@ -100,9 +100,7 @@ export class VisualizzamappaPage {
 
                     google.maps.event.addListener(marker, 'click', (function(marker,counter) {
                         return function() {
-                              infowindow.setContent(+counter.DUG+" "+ counter.DENOMINAZIONE+" "+counter.CIVICO);
-
-
+                              infowindow.setContent(counter.DUG+" "+ counter.DENOMINAZIONE+" "+counter.CIVICO);
                             infowindow.open(this.map, marker);
 
 
@@ -115,22 +113,6 @@ export class VisualizzamappaPage {
 
 
                 }
-                    /*  giusto
-                      for (var i = 0; i < this.items.length; i++) {
-                            var counter = this.items[i];
-
-
-                            var myLatLng = {lat: parseFloat(counter.LATITUDINE), lng: parseFloat(counter.LONGITUDINE)};
-
-                           this.marker = new google.maps.Marker({
-                                position: myLatLng,
-                                map: this.map,
-                                title: counter.DENOMINAZIONE,
-                            });
-
-
-
-                  }*/
 
 
 
@@ -161,35 +143,7 @@ export class VisualizzamappaPage {
 
 
 
-       // this.addMarker(location, map);
 
-     /* var locations = [
-          ['Via Cardinal Dell Olio, n°34', 40.7777896012147,14.7583025077829, 4],
-            ['Via Rupe, n°13', 40.75958449497789, 14.692164897700309, 5],
-           ['Via Kenney, n°12', 40.759761474604254, 14.69226503422658, 3],
-            ['Via Kennedy, n°67', 40.75987587912256, 14.692322255408612, 2],
-            ['MVia Sant ANtonio Abate, n°3', 40.76014473358941, 14.692460537247712, 1]
-        ];
-
-        var infowindow = new google.maps.InfoWindow();
-
-        var marker, i;
-
-
-        for (i = 0; i < locations.length; i++) {
-            marker = new google.maps.Marker({
-                position: new google.maps.LatLng(locations[i][1], locations[i][2]),
-                map: this.map
-            });
-
-            google.maps.event.addListener(marker, 'click', (function(marker, i) {
-                return function() {
-                    infowindow.setContent(locations[i][0]);
-                    infowindow.open(this.map, marker);
-                }
-            })(marker, i));
-        }
-*/
         var Fisciano = [
             {lat:40.7569672387864, lng:14.8469033932164},
             {lat:40.7548932018406, lng:14.8440531838236},
@@ -314,18 +268,6 @@ export class VisualizzamappaPage {
             fillOpacity: 0.10,
         });
         limiteFisciano.setMap(this.map);
-
-
-        /* this.nativeGeocoder.reverseGeocode(40.760221574960845, 14.6925106044672026)
-           .then((result: NativeGeocoderReverseResult) => {
-               console.log(JSON.stringify(result));
-               this.stringa=JSON.stringify(result);
-           })
-           .catch((error: any) => console.log(error));
-
-     this.nativeGeocoder.forwardGeocode('Berlin')
-           .then((coordinates: NativeGeocoderForwardResult) => console.log('The coordinates are latitude=' + coordinates.latitude + ' and longitude=' + coordinates.longitude))
-           .catch((error: any) => console.log(error));*/
         this.send();
 
     }

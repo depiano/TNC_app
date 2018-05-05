@@ -66,7 +66,7 @@
 
       <ion-item>
           <ion-label floating>Denominazione</ion-label>
-          <ion-input type="number" [(ngModel)]="denominazione" name="civico" (change)="onAlert()"></ion-input>
+          <ion-input type="text" [(ngModel)]="denominazione" name="civico" (change)="onAlert()"></ion-input>
       </ion-item>
 
 
@@ -77,7 +77,7 @@
 
       <ion-item>
           <ion-label floating>Esponente</ion-label>
-          <ion-input type="number" [(ngModel)]="esponente" name="civico" (change)="onAlert()"></ion-input>
+          <ion-input type="text" [(ngModel)]="esponente" name="civico" (change)="onAlert()"></ion-input>
       </ion-item>
       <div #alert align="center" *ngIf="alert">
           <label  style="color:blue">Riempire tutti i campi</label>

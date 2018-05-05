@@ -3,6 +3,7 @@ import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angula
 import {HomePage} from "../home/home";
 import {SignupPage} from "../signup/signup";
 import { HTTP } from '@ionic-native/http';
+import {Md5} from "md5-typescript";
 
 
 
@@ -45,9 +46,10 @@ this.error=false;
 
     send(){
         sessionStorage.clear();
+        const criptPassword = Md5.init(this.user.password);
         let postParams = {
             'email': this.user.email,
-            'password': this.user.password
+            'password': criptPassword
         }
 
         let datas = {

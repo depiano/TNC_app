@@ -4,6 +4,7 @@ import {ProfiloPage} from "../profilo/profilo";
 import {HomePage} from "../home/home";
 import {AlertController} from "ionic-angular";
 import {HTTP} from "@ionic-native/http";
+import {Md5} from "md5-typescript";
 
 /**
  * Generated class for the ModificaprofiloPage page.
@@ -62,12 +63,12 @@ onControllaPass(){
 
 send(){
 
-    
+    const criptPassword = Md5.init(this.user.password);
 
   let postParams = {
       'CF': this.user.codice,
       'PHONE':this.user.telefono,
-      'PASSWORD':this.user.password
+      'PASSWORD':criptPassword
 
   }
 

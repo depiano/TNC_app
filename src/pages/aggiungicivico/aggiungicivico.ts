@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { NativeGeocoder, NativeGeocoderReverseResult, NativeGeocoderForwardResult } from '@ionic-native/native-geocoder';
 import {ViewController} from 'ionic-angular';
 import {HTTP} from "@ionic-native/http";
+import {Md5 } from "md5-typescript";
 
 /**
  * Generated class for the AggiungicivicoPage page.
@@ -31,6 +32,7 @@ export class AggiungicivicoPage {
   stringa:any;
   items;
   esponente;
+  sessione;
 
 
 
@@ -45,6 +47,7 @@ export class AggiungicivicoPage {
 
     constructor(public viewCtrl: ViewController, public navCtrl: NavController, public navParams: NavParams,private camera: Camera,  private http: HTTP,private nativeGeocoder: NativeGeocoder, public alertCtrl: AlertController) {
 this.alert=false;
+        this.sessione=sessionStorage.getItem('sessionCodice');
 
         this.autocompleteItems = [];
         this.autocomplete = {
@@ -52,6 +55,7 @@ this.alert=false;
         };
         this.selectedItems = [];
         this.filteredItems = [];
+
 
 
 
@@ -216,44 +220,6 @@ onClear(){
 
 
 
-
-
-
-  fotoCivico(){
-      const options: CameraOptions = {
-          quality: 100,
-          destinationType: this.camera.DestinationType.DATA_URL,
-          encodingType: this.camera.EncodingType.JPEG,
-          mediaType: this.camera.MediaType.PICTURE
-      }
-
-      this.camera.getPicture(options).then((imageData) => {
-          // imageData is either a base64 encoded string or a file URI
-          // If it's base64:
-          let base64Image = 'data:image/jpeg;base64,' + imageData;
-      }, (err) => {
-          // Handle error
-      });
-  }
-
-  fotoCasa(){
-      const options: CameraOptions = {
-          quality: 100,
-          destinationType: this.camera.DestinationType.DATA_URL,
-          encodingType: this.camera.EncodingType.JPEG,
-          mediaType: this.camera.MediaType.PICTURE
-      }
-
-      this.camera.getPicture(options).then((imageData) => {
-          // imageData is either a base64 encoded string or a file URI
-          // If it's base64:
-          let base64Image = 'data:image/jpeg;base64,' + imageData;
-      }, (err) => {
-          // Handle error
-      });
-  }
-
-
   conferma(){
       if(this.latitudine===''||this.longitudine===''||this.searchDUG===''||this.denominazione===''){
 this.alert=true;
@@ -268,11 +234,10 @@ this.alert=true;
               'DUG': this.searchDUG,
               'DENOMINAZIONE': this.denominazione,
               'CIVICO': this.civico,
-              'ESPONENTE': 'NULL',
-              'PATHFOTOCIVICO': 'NULL',
+              'ESPONENTE': this.esponente,
+              'PATHFOTOCIVICO': '',
               'PATHFOTOABITAZIONE': 'NULL',
-              'EMAIL': 'NULL',
-              'CF_USER': 'NULL',
+              'CF_USER': this.sessione,
               'CF_SUPERUSER': 'NULL',
               'LONGITUDINE_ARR': 'NULL',
               'LATITUDINE_ARR': 'NULL'

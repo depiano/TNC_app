@@ -1,13 +1,13 @@
 webpackJsonp([8],{
 
-/***/ 106:
+/***/ 107:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AggiungicivicoPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_camera__ = __webpack_require__(165);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_camera__ = __webpack_require__(166);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_native_geocoder__ = __webpack_require__(84);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_http__ = __webpack_require__(21);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -44,6 +44,7 @@ var AggiungicivicoPage = /** @class */ (function () {
         this.searchDUG = '';
         this.name = '';
         this.alert = false;
+        this.sessione = sessionStorage.getItem('sessionCodice');
         this.autocompleteItems = [];
         this.autocomplete = {
             query: ''
@@ -182,36 +183,6 @@ var AggiungicivicoPage = /** @class */ (function () {
             this.assignCopy(); //when nothing has typed
         this.filteredItems = Object.assign([], this.autocompleteItems).filter(function (item) { return item.name.toLowerCase().indexOf(value.toLowerCase()) > -1; });
     };
-    AggiungicivicoPage.prototype.fotoCivico = function () {
-        var options = {
-            quality: 100,
-            destinationType: this.camera.DestinationType.DATA_URL,
-            encodingType: this.camera.EncodingType.JPEG,
-            mediaType: this.camera.MediaType.PICTURE
-        };
-        this.camera.getPicture(options).then(function (imageData) {
-            // imageData is either a base64 encoded string or a file URI
-            // If it's base64:
-            var base64Image = 'data:image/jpeg;base64,' + imageData;
-        }, function (err) {
-            // Handle error
-        });
-    };
-    AggiungicivicoPage.prototype.fotoCasa = function () {
-        var options = {
-            quality: 100,
-            destinationType: this.camera.DestinationType.DATA_URL,
-            encodingType: this.camera.EncodingType.JPEG,
-            mediaType: this.camera.MediaType.PICTURE
-        };
-        this.camera.getPicture(options).then(function (imageData) {
-            // imageData is either a base64 encoded string or a file URI
-            // If it's base64:
-            var base64Image = 'data:image/jpeg;base64,' + imageData;
-        }, function (err) {
-            // Handle error
-        });
-    };
     AggiungicivicoPage.prototype.conferma = function () {
         var _this = this;
         if (this.latitudine === '' || this.longitudine === '' || this.searchDUG === '' || this.denominazione === '') {
@@ -226,11 +197,10 @@ var AggiungicivicoPage = /** @class */ (function () {
                 'DUG': this.searchDUG,
                 'DENOMINAZIONE': this.denominazione,
                 'CIVICO': this.civico,
-                'ESPONENTE': 'NULL',
-                'PATHFOTOCIVICO': 'NULL',
+                'ESPONENTE': this.esponente,
+                'PATHFOTOCIVICO': '',
                 'PATHFOTOABITAZIONE': 'NULL',
-                'EMAIL': 'NULL',
-                'CF_USER': 'NULL',
+                'CF_USER': this.sessione,
                 'CF_SUPERUSER': 'NULL',
                 'LONGITUDINE_ARR': 'NULL',
                 'LATITUDINE_ARR': 'NULL'
@@ -262,7 +232,7 @@ var AggiungicivicoPage = /** @class */ (function () {
     };
     AggiungicivicoPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-aggiungicivico',template:/*ion-inline-start:"/Users/vincenzobevilacqua/Desktop/TNCapp/src/pages/aggiungicivico/aggiungicivico.html"*/'<!--\n  Generated template for the AggiungicivicoPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>TNC - Censimento</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <ion-list>\n\n    <ion-item>\n      <ion-label floating>Latitudine</ion-label>\n      <ion-input type="text" [(ngModel)]="latitudine" (change)="onAlert()"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label floating>Longitudine</ion-label>\n      <ion-input type="text" [(ngModel)]="longitudine" (change)="onAlert()"></ion-input>\n    </ion-item>\n\n      <ion-item>\n          <ion-label floating>Suggerimento Google maps</ion-label>\n          <ion-input type="text" [(ngModel)]="denominazione" name="denominazione" (change)="onAlert()"></ion-input>\n      </ion-item>\n\n\n\n      <ion-list>\n\n\n\n          <ion-item>\n      <ion-label >DUG disponibili</ion-label>\n</ion-item>\n\n\n          <ion-toolbar>\n              <ion-searchbar  [(ngModel)]="name" (input)="filterItem(name)" [showCancelButton]=\'true\'  (ionCancel)="dismiss()" (change)="onClear()"></ion-searchbar>\n          </ion-toolbar>\n          <ion-list>\n              <ion-item *ngFor="let item of filteredItems" tappable   (click)="chooseItem(item)">\n                  {{ item.name }}\n              </ion-item>\n\n          </ion-list>\n      </ion-list>\n\n\n\n\n      <ion-item>\n          <ion-label floating>DUG</ion-label>\n          <ion-input type="text" [(ngModel)]="searchDUG" name="DUG" (change)="onAlert()"></ion-input>\n      </ion-item>\n\n\n\n\n      <ion-item>\n          <ion-label floating>Denominazione</ion-label>\n          <ion-input type="number" [(ngModel)]="denominazione" name="civico" (change)="onAlert()"></ion-input>\n      </ion-item>\n\n\n      <ion-item>\n          <ion-label floating>Civico</ion-label>\n        <ion-input type="number" [(ngModel)]="civico" name="civico" (change)="onAlert()"></ion-input>\n      </ion-item>\n\n      <ion-item>\n          <ion-label floating>Esponente</ion-label>\n          <ion-input type="number" [(ngModel)]="esponente" name="civico" (change)="onAlert()"></ion-input>\n      </ion-item>\n      <div #alert align="center" *ngIf="alert">\n          <label  style="color:blue">Riempire tutti i campi</label>\n      </div>\n    <div padding>\n      <ion-row>\n        <ion-col>\n    <button ion-button color="primary" (click)="fotoCivico()" round>Foto civico</button>\n        </ion-col>\n        <ion-col>\n    <button ion-button color="primary" (click)="fotoCasa()" round>Foto casa</button>\n        </ion-col>\n      </ion-row>\n      <ion-row>\n        <ion-col>\n          <button ion-button color="primary" round>Annulla</button>\n        </ion-col>\n        <ion-col>\n          <button ion-button color="primary" (click)="conferma()" round>Conferma</button>\n        </ion-col>\n      </ion-row>\n    </div>\n  </ion-list>\n</ion-content>\n'/*ion-inline-end:"/Users/vincenzobevilacqua/Desktop/TNCapp/src/pages/aggiungicivico/aggiungicivico.html"*/,
+            selector: 'page-aggiungicivico',template:/*ion-inline-start:"/Users/vincenzobevilacqua/Desktop/TNCapp/src/pages/aggiungicivico/aggiungicivico.html"*/'<!--\n  Generated template for the AggiungicivicoPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>TNC - Censimento</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <ion-list>\n\n    <ion-item>\n      <ion-label floating>Latitudine</ion-label>\n      <ion-input type="text" [(ngModel)]="latitudine" (change)="onAlert()"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label floating>Longitudine</ion-label>\n      <ion-input type="text" [(ngModel)]="longitudine" (change)="onAlert()"></ion-input>\n    </ion-item>\n\n      <ion-item>\n          <ion-label floating>Suggerimento Google maps</ion-label>\n          <ion-input type="text" [(ngModel)]="denominazione" name="denominazione" (change)="onAlert()"></ion-input>\n      </ion-item>\n\n\n\n      <ion-list>\n\n\n\n          <ion-item>\n      <ion-label >DUG disponibili</ion-label>\n</ion-item>\n\n\n          <ion-toolbar>\n              <ion-searchbar  [(ngModel)]="name" (input)="filterItem(name)" [showCancelButton]=\'true\'  (ionCancel)="dismiss()" (change)="onClear()"></ion-searchbar>\n          </ion-toolbar>\n          <ion-list>\n              <ion-item *ngFor="let item of filteredItems" tappable   (click)="chooseItem(item)">\n                  {{ item.name }}\n              </ion-item>\n\n          </ion-list>\n      </ion-list>\n\n\n\n\n      <ion-item>\n          <ion-label floating>DUG</ion-label>\n          <ion-input type="text" [(ngModel)]="searchDUG" name="DUG" (change)="onAlert()"></ion-input>\n      </ion-item>\n\n\n\n\n      <ion-item>\n          <ion-label floating>Denominazione</ion-label>\n          <ion-input type="text" [(ngModel)]="denominazione" name="civico" (change)="onAlert()"></ion-input>\n      </ion-item>\n\n\n      <ion-item>\n          <ion-label floating>Civico</ion-label>\n        <ion-input type="number" [(ngModel)]="civico" name="civico" (change)="onAlert()"></ion-input>\n      </ion-item>\n\n      <ion-item>\n          <ion-label floating>Esponente</ion-label>\n          <ion-input type="text" [(ngModel)]="esponente" name="civico" (change)="onAlert()"></ion-input>\n      </ion-item>\n      <div #alert align="center" *ngIf="alert">\n          <label  style="color:blue">Riempire tutti i campi</label>\n      </div>\n    <div padding>\n      <ion-row>\n        <ion-col>\n    <button ion-button color="primary" (click)="fotoCivico()" round>Foto civico</button>\n        </ion-col>\n        <ion-col>\n    <button ion-button color="primary" (click)="fotoCasa()" round>Foto casa</button>\n        </ion-col>\n      </ion-row>\n      <ion-row>\n        <ion-col>\n          <button ion-button color="primary" round>Annulla</button>\n        </ion-col>\n        <ion-col>\n          <button ion-button color="primary" (click)="conferma()" round>Conferma</button>\n        </ion-col>\n      </ion-row>\n    </div>\n  </ion-list>\n</ion-content>\n'/*ion-inline-end:"/Users/vincenzobevilacqua/Desktop/TNCapp/src/pages/aggiungicivico/aggiungicivico.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* ViewController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_camera__["a" /* Camera */], __WEBPACK_IMPORTED_MODULE_4__ionic_native_http__["a" /* HTTP */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_native_geocoder__["a" /* NativeGeocoder */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]])
     ], AggiungicivicoPage);
@@ -273,7 +243,7 @@ var AggiungicivicoPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 107:
+/***/ 108:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -389,7 +359,7 @@ var VisualizzacivicoPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 108:
+/***/ 109:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -398,6 +368,7 @@ var VisualizzacivicoPage = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__login_login__ = __webpack_require__(53);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_http__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_md5_typescript__ = __webpack_require__(85);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -407,6 +378,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -461,10 +433,12 @@ var SignupPage = /** @class */ (function () {
     };
     SignupPage.prototype.send = function () {
         var _this = this;
+        var criptPassword = __WEBPACK_IMPORTED_MODULE_4_md5_typescript__["a" /* Md5 */].init(this.user.password);
+        console.log(criptPassword);
         var postParams = {
             'FULLNAME': this.user.fullname,
             'EMAIL': this.user.email,
-            'PASSWORD': this.user.password,
+            'PASSWORD': criptPassword,
             'PHONE': this.user.telefono,
             'CF': this.user.codiceF,
             'TYPE': 'SIMPLE OPERATOR'
@@ -507,7 +481,7 @@ var SignupPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 109:
+/***/ 110:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -516,6 +490,7 @@ var SignupPage = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__profilo_profilo__ = __webpack_require__(55);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_http__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_md5_typescript__ = __webpack_require__(85);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -525,6 +500,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -570,10 +546,11 @@ var ModificaprofiloPage = /** @class */ (function () {
     };
     ModificaprofiloPage.prototype.send = function () {
         var _this = this;
+        var criptPassword = __WEBPACK_IMPORTED_MODULE_4_md5_typescript__["a" /* Md5 */].init(this.user.password);
         var postParams = {
             'CF': this.user.codice,
             'PHONE': this.user.telefono,
-            'PASSWORD': this.user.password
+            'PASSWORD': criptPassword
         };
         var datas = {
             'Action': 'Login',
@@ -619,7 +596,7 @@ var ModificaprofiloPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 110:
+/***/ 111:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -688,27 +665,11 @@ var VisualizzamappaPage = /** @class */ (function () {
                    alert.present();*/
                 google.maps.event.addListener(marker, 'click', (function (marker, counter) {
                     return function () {
-                        infowindow.setContent(+counter.DUG + " " + counter.DENOMINAZIONE + " " + counter.CIVICO);
+                        infowindow.setContent(counter.DUG + " " + counter.DENOMINAZIONE + " " + counter.CIVICO);
                         infowindow.open(this.map, marker);
                     };
                 })(marker, counter));
             }
-            /*  giusto
-              for (var i = 0; i < this.items.length; i++) {
-                    var counter = this.items[i];
-
-
-                    var myLatLng = {lat: parseFloat(counter.LATITUDINE), lng: parseFloat(counter.LONGITUDINE)};
-
-                   this.marker = new google.maps.Marker({
-                        position: myLatLng,
-                        map: this.map,
-                        title: counter.DENOMINAZIONE,
-                    });
-
-
-
-          }*/
         })
             .catch(function (error) {
             console.log(error.status);
@@ -723,34 +684,6 @@ var VisualizzamappaPage = /** @class */ (function () {
             center: location
         };
         this.map = new google.maps.Map(this.mapRef.nativeElement, options);
-        // this.addMarker(location, map);
-        /* var locations = [
-             ['Via Cardinal Dell Olio, n°34', 40.7777896012147,14.7583025077829, 4],
-               ['Via Rupe, n°13', 40.75958449497789, 14.692164897700309, 5],
-              ['Via Kenney, n°12', 40.759761474604254, 14.69226503422658, 3],
-               ['Via Kennedy, n°67', 40.75987587912256, 14.692322255408612, 2],
-               ['MVia Sant ANtonio Abate, n°3', 40.76014473358941, 14.692460537247712, 1]
-           ];
-   
-           var infowindow = new google.maps.InfoWindow();
-   
-           var marker, i;
-   
-   
-           for (i = 0; i < locations.length; i++) {
-               marker = new google.maps.Marker({
-                   position: new google.maps.LatLng(locations[i][1], locations[i][2]),
-                   map: this.map
-               });
-   
-               google.maps.event.addListener(marker, 'click', (function(marker, i) {
-                   return function() {
-                       infowindow.setContent(locations[i][0]);
-                       infowindow.open(this.map, marker);
-                   }
-               })(marker, i));
-           }
-   */
         var Fisciano = [
             { lat: 40.7569672387864, lng: 14.8469033932164 },
             { lat: 40.7548932018406, lng: 14.8440531838236 },
@@ -871,16 +804,6 @@ var VisualizzamappaPage = /** @class */ (function () {
             fillOpacity: 0.10,
         });
         limiteFisciano.setMap(this.map);
-        /* this.nativeGeocoder.reverseGeocode(40.760221574960845, 14.6925106044672026)
-           .then((result: NativeGeocoderReverseResult) => {
-               console.log(JSON.stringify(result));
-               this.stringa=JSON.stringify(result);
-           })
-           .catch((error: any) => console.log(error));
-
-     this.nativeGeocoder.forwardGeocode('Berlin')
-           .then((coordinates: NativeGeocoderForwardResult) => console.log('The coordinates are latitude=' + coordinates.latitude + ' and longitude=' + coordinates.longitude))
-           .catch((error: any) => console.log(error));*/
         this.send();
     };
     __decorate([
@@ -901,7 +824,7 @@ var VisualizzamappaPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 122:
+/***/ 123:
 /***/ (function(module, exports) {
 
 function webpackEmptyAsyncContext(req) {
@@ -914,44 +837,44 @@ function webpackEmptyAsyncContext(req) {
 webpackEmptyAsyncContext.keys = function() { return []; };
 webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
 module.exports = webpackEmptyAsyncContext;
-webpackEmptyAsyncContext.id = 122;
+webpackEmptyAsyncContext.id = 123;
 
 /***/ }),
 
-/***/ 164:
+/***/ 165:
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
 	"../pages/aggiungicivico/aggiungicivico.module": [
-		287,
+		288,
 		7
 	],
 	"../pages/login/login.module": [
-		288,
+		289,
 		6
 	],
 	"../pages/mappa/mappa.module": [
-		289,
+		290,
 		5
 	],
 	"../pages/modificaprofilo/modificaprofilo.module": [
-		290,
+		291,
 		4
 	],
 	"../pages/profilo/profilo.module": [
-		291,
+		292,
 		3
 	],
 	"../pages/signup/signup.module": [
-		292,
+		293,
 		2
 	],
 	"../pages/visualizzacivico/visualizzacivico.module": [
-		293,
+		294,
 		1
 	],
 	"../pages/visualizzamappa/visualizzamappa.module": [
-		294,
+		295,
 		0
 	]
 };
@@ -966,18 +889,18 @@ function webpackAsyncContext(req) {
 webpackAsyncContext.keys = function webpackAsyncContextKeys() {
 	return Object.keys(map);
 };
-webpackAsyncContext.id = 164;
+webpackAsyncContext.id = 165;
 module.exports = webpackAsyncContext;
 
 /***/ }),
 
-/***/ 209:
+/***/ 210:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__ = __webpack_require__(210);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_module__ = __webpack_require__(230);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__ = __webpack_require__(211);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_module__ = __webpack_require__(231);
 
 
 Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* platformBrowserDynamic */])().bootstrapModule(__WEBPACK_IMPORTED_MODULE_1__app_module__["a" /* AppModule */]);
@@ -985,7 +908,7 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 
 /***/ }),
 
-/***/ 230:
+/***/ 231:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -993,23 +916,23 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__ = __webpack_require__(32);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_geolocation__ = __webpack_require__(167);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_geolocation__ = __webpack_require__(168);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_native_geocoder__ = __webpack_require__(84);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_component__ = __webpack_require__(280);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_component__ = __webpack_require__(281);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_home_home__ = __webpack_require__(48);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_login_login__ = __webpack_require__(53);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_signup_signup__ = __webpack_require__(108);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_signup_signup__ = __webpack_require__(109);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__pages_profilo_profilo__ = __webpack_require__(55);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__pages_modificaprofilo_modificaprofilo__ = __webpack_require__(109);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__ionic_native_status_bar__ = __webpack_require__(207);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__ionic_native_splash_screen__ = __webpack_require__(208);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__pages_modificaprofilo_modificaprofilo__ = __webpack_require__(110);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__ionic_native_status_bar__ = __webpack_require__(208);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__ionic_native_splash_screen__ = __webpack_require__(209);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__pages_mappa_mappa__ = __webpack_require__(54);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__pages_aggiungicivico_aggiungicivico__ = __webpack_require__(106);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__pages_visualizzacivico_visualizzacivico__ = __webpack_require__(107);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__pages_visualizzamappa_visualizzamappa__ = __webpack_require__(110);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__ionic_native_camera__ = __webpack_require__(165);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__pages_aggiungicivico_aggiungicivico__ = __webpack_require__(107);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__pages_visualizzacivico_visualizzacivico__ = __webpack_require__(108);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__pages_visualizzamappa_visualizzamappa__ = __webpack_require__(111);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__ionic_native_camera__ = __webpack_require__(166);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__ionic_native_http__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__angular_common_http__ = __webpack_require__(281);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__angular_common_http__ = __webpack_require__(282);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1100,20 +1023,20 @@ var AppModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 280:
+/***/ 281:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MyApp; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__ = __webpack_require__(207);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(208);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__ = __webpack_require__(208);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(209);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_home_home__ = __webpack_require__(48);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_login_login__ = __webpack_require__(53);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_profilo_profilo__ = __webpack_require__(55);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_mappa_mappa__ = __webpack_require__(54);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_visualizzamappa_visualizzamappa__ = __webpack_require__(110);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_visualizzamappa_visualizzamappa__ = __webpack_require__(111);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1186,7 +1109,7 @@ var MyApp = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mappa_mappa__ = __webpack_require__(54);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__visualizzacivico_visualizzacivico__ = __webpack_require__(107);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__visualizzacivico_visualizzacivico__ = __webpack_require__(108);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_http__ = __webpack_require__(21);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1270,8 +1193,9 @@ var HomePage = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__home_home__ = __webpack_require__(48);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__signup_signup__ = __webpack_require__(108);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__signup_signup__ = __webpack_require__(109);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_http__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_md5_typescript__ = __webpack_require__(85);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1281,6 +1205,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -1311,9 +1236,10 @@ var LoginPage = /** @class */ (function () {
     LoginPage.prototype.send = function () {
         var _this = this;
         sessionStorage.clear();
+        var criptPassword = __WEBPACK_IMPORTED_MODULE_5_md5_typescript__["a" /* Md5 */].init(this.user.password);
         var postParams = {
             'email': this.user.email,
-            'password': this.user.password
+            'password': criptPassword
         };
         var datas = {
             'Action': 'Login',
@@ -1355,7 +1281,7 @@ var LoginPage = /** @class */ (function () {
     };
     LoginPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-welcome',template:/*ion-inline-start:"/Users/vincenzobevilacqua/Desktop/TNCapp/src/pages/login/login.html"*/'\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>TNCapp</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content scroll="false">\n  <div class="splash-bg"></div>\n  <div class="splash-info">\n    <div class="splash-logo"></div>\n    <div class="splash-intro">\n      TNC\n\n    </div>\n  </div>\n  <div padding>\n    <ion-list>\n      <ion-item>\n        <ion-input type="text" placeholder="Email" [(ngModel)]="user.email" name="email" #email (change)="onAlert()"></ion-input>\n      </ion-item>\n\n      <ion-item>\n        <ion-input type="password"  placeholder="Password" [(ngModel)]="user.password" name="password" #password (change)="onAlert()"></ion-input>\n      </ion-item>\n\n    </ion-list>\n\n    <div #alert align="center" *ngIf="alert">\n      <label  style="color:blue">Riempire tutti i campi</label>\n    </div>\n    <div #alert align="center" *ngIf="error">\n      <label  style="color:blue">Utente non presente</label>\n    </div>\n\n    <button ion-button block (click)="onLogin()"  color="primary">Login</button>\n    <button ion-button block (click)="onSignup()"   color="primary">Registrati</button>\n\n  </div>\n</ion-content>\n'/*ion-inline-end:"/Users/vincenzobevilacqua/Desktop/TNCapp/src/pages/login/login.html"*/,
+            selector: 'page-welcome',template:/*ion-inline-start:"/Users/vincenzobevilacqua/Desktop/TNCapp/src/pages/login/login.html"*/'\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>TNCapp</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content scroll="false">\n  <div class="splash-bg"></div>\n  <div class="splash-info">\n    <div class="splash-logo"></div>\n    <div class="splash-intro">\n      TNC\n\n    </div>\n  </div>\n  <div padding>\n    <ion-list>\n      <ion-item>\n        <ion-input type="text" placeholder="Email" [(ngModel)]="user.email" name="email" #email (change)="onAlert()"></ion-input>\n      </ion-item>\n\n      <ion-item>\n        <ion-input type="password"  placeholder="Password" [(ngModel)]="user.password" name="password" #password (change)="onAlert()"></ion-input>\n      </ion-item>\n\n    </ion-list>\n\n    <div #alert align="center" *ngIf="alert">\n      <label  style="color:blue">Riempire tutti i campi</label>\n    </div>\n    <div #alert align="center" *ngIf="error">\n      <label  style="color:blue">Credenziali errate</label>\n    </div>\n\n    <button ion-button block (click)="onLogin()"  color="primary">Login</button>\n    <button ion-button block (click)="onSignup()"   color="primary">Registrati</button>\n\n  </div>\n</ion-content>\n'/*ion-inline-end:"/Users/vincenzobevilacqua/Desktop/TNCapp/src/pages/login/login.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */], __WEBPACK_IMPORTED_MODULE_4__ionic_native_http__["a" /* HTTP */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]])
     ], LoginPage);
@@ -1373,8 +1299,8 @@ var LoginPage = /** @class */ (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MappaPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_geolocation__ = __webpack_require__(167);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__aggiungicivico_aggiungicivico__ = __webpack_require__(106);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_geolocation__ = __webpack_require__(168);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__aggiungicivico_aggiungicivico__ = __webpack_require__(107);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1626,7 +1552,7 @@ var MappaPage = /** @class */ (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProfiloPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modificaprofilo_modificaprofilo__ = __webpack_require__(109);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modificaprofilo_modificaprofilo__ = __webpack_require__(110);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_http__ = __webpack_require__(21);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1710,5 +1636,5 @@ var ProfiloPage = /** @class */ (function () {
 
 /***/ })
 
-},[209]);
+},[210]);
 //# sourceMappingURL=main.js.map

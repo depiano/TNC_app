@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AlertController,IonicPage, NavController, NavParams } from 'ionic-angular';
 import {LoginPage} from "../login/login";
 import {HTTP} from "@ionic-native/http";
+import {Md5} from "md5-typescript";
 
 /**
  * Generated class for the SignupPage page.
@@ -77,12 +78,13 @@ export class SignupPage {
 
 
     send(){
-
+        const criptPassword = Md5.init(this.user.password);
+        console.log(criptPassword);
 
         let postParams = {
             'FULLNAME':this.user.fullname,
             'EMAIL': this.user.email,
-            'PASSWORD': this.user.password,
+            'PASSWORD': criptPassword,
             'PHONE': this.user.telefono,
             'CF': this.user.codiceF,
             'TYPE': 'SIMPLE OPERATOR'
