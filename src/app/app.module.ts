@@ -20,6 +20,8 @@ import {VisualizzamappaPage} from "../pages/visualizzamappa/visualizzamappa";
 import {Camera} from "@ionic-native/camera";
 import { HTTP } from '@ionic-native/http';
 import { HttpClientModule } from '@angular/common/http';
+import {FileTransfer} from "@ionic-native/file-transfer";
+import { Device } from '@ionic-native/device';
 
 @NgModule({
   declarations: [
@@ -59,6 +61,7 @@ import { HttpClientModule } from '@angular/common/http';
       Geolocation,
       Camera,
       HTTP,
+      FileTransfer,
       NativeGeocoder,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]

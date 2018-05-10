@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {ProfiloPage} from "../profilo/profilo";
-import {HomePage} from "../home/home";
 import {AlertController} from "ionic-angular";
 import {HTTP} from "@ionic-native/http";
 import {Md5} from "md5-typescript";

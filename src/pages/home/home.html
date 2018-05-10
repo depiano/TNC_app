@@ -8,14 +8,24 @@
 </ion-header>
 
 <ion-content padding>
- <!-- <ion-label>{{user.fullname}}</ion-label> -->
+
 
 
   <ion-list>
-    <ion-item *ngFor="let item of items" (click)="visualizzaCivico(item.LATITUDINE,item.LONGITUDINE)">
-      <ion-avatar item-start>
-        <img src="assets/imgs/marker.png">
+    <ion-item *ngFor="let item of rilievo" (click)="visualizzaCivico(item.LATITUDINE,item.LONGITUDINE)" >
+
+        <ion-avatar item-start  *ngIf="onCambiaStato(item.STATO)">
+        <img src="assets/imgs/marker_validato.png"  >
+        </ion-avatar>
+
+      <ion-avatar item-start *ngIf="onAttesa(item.STATO)">
+        <img src="assets/imgs/marker_inAttesa.png"  >
       </ion-avatar>
+
+      <ion-avatar item-start *ngIf="onNonValidato(item.STATO)">
+        <img src="assets/imgs/marker_non_validato.png"  >
+      </ion-avatar>
+
       <h2>{{item.NOMECOMUNE}}</h2>
       <h3>{{item.DUG}} {{item.DENOMINAZIONE}} </h3>
       <p>n° {{item.CIVICO}}</p>

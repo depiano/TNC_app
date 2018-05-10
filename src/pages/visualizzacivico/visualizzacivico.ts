@@ -27,10 +27,16 @@ errore: any;
     denominazione:any;
     paese:any;
     esponente: any;
+    fotoCasa:any;
+    fotoCivico:any;
+    read ;
+    viewButton;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private http: HTTP, public alertCtrl: AlertController) {
       this.latitudine=  navParams.get ( "latitudine" ) ;
       this.longitudine= navParams.get ( "longitudine" ) ;
+      this.read=true;
+      this.viewButton=false;
 
   }
 
@@ -103,7 +109,20 @@ errore: any;
                         this.denominazione=this.items.RESULT.DENOMINAZIONE;
                         this.civico=this.items.RESULT.CIVICO;
                         this.esponente=""+this.items.RESULT.ESPONENTE;
-                     
+
+
+                        if(this.items.RESULT.PATHFOTOCIVICO===null || this.items.RESULT.PATHFOTOABITAZIONE===null){
+                          this.fotoCivico="assets/imgs/logoApp.png";
+                          this.fotoCasa="assets/imgs/logoApp.png";
+                        }
+                        else{
+                     this.fotoCivico=this.items.RESULT.PATHFOTOCIVICO;
+                     this.fotoCasa=this.items.RESULT.PATHFOTOABITAZIONE;
+                            //this.read=false;
+                           // this.viewButton=true;
+
+
+                        }
 
                     }
 
@@ -120,6 +139,68 @@ errore: any;
 
     }
 
+    onAnnulla(){
+        this.navCtrl.setRoot(HomePage);
+    }
 
+   /* onModifica(){
+
+        let postParams = {
+            'ESPONENTE': this.esponente,
+            'CIVICO': this.civico,
+            'DENOOMINAZIONE': this.denominazione
+
+        }
+
+        let datas = {
+            'Action': 'Login',
+            'UserName': 'bla',
+            'Password': 'blabla'
+        };
+        let headers = {
+            'Content-Type': 'application/json'
+        };
+        this.http.post('http://tcnapp.altervista.org/script_tncapp/modificaCivico.php', postParams, headers)
+            .then(data => {
+
+
+                this.items=JSON.parse(data.data);
+                this.errore= this.items.ERROR;
+
+                if(this.errore==='none'){
+
+                    this.paese=this.items.RESULT.NOMECOMUNE;
+                    this.dug=this.items.RESULT.DUG;
+                    this.denominazione=this.items.RESULT.DENOMINAZIONE;
+                    this.civico=this.items.RESULT.CIVICO;
+                    this.esponente=""+this.items.RESULT.ESPONENTE;
+
+
+                    if(this.items.RESULT.PATHFOTOCIVICO===null || this.items.RESULT.PATHFOTOABITAZIONE===null){
+                        this.fotoCivico="assets/imgs/logoApp.png";
+                        this.fotoCasa="assets/imgs/logoApp.png";
+                    }
+                    else{
+                        this.fotoCivico=this.items.RESULT.PATHFOTOCIVICO;
+                        this.fotoCasa=this.items.RESULT.PATHFOTOABITAZIONE;
+                        this.read=false;
+                        this.viewButton=true;
+
+
+                    }
+
+                }
+
+
+            })
+            .catch(error => {
+
+                console.log(error.status);
+                console.log(error.error); // error message as string
+                console.log(error.headers);
+
+            });
+
+    }*/
 
 }

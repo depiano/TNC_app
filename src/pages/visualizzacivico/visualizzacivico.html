@@ -1,9 +1,4 @@
-<!--
-  Generated template for the VisualizzacivicoPage page.
 
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
   <ion-navbar>
@@ -17,10 +12,10 @@
   <div #map id="map"></div>
   <ion-row>
     <ion-col>
-      <img src="assets/imgs/numerocivico.png" alt="Immagine profilo">
+      <img src="{{fotoCasa}}" style="width: 200px; height: 300px" alt="Immagine profilo">
     </ion-col>
     <ion-col>
-      <img src="assets/imgs/casa.png" alt="Immagine profilo">
+      <img src="{{fotoCivico}}"  style="width: 200px; height: 300px" alt="Immagine profilo">
     </ion-col>
   </ion-row>
   <ion-list>
@@ -63,18 +58,20 @@
       <ion-input type="text" [(ngModel)]="esponente" [readonly]="true"></ion-input>
     </ion-item>
 
-    <!--  <div padding>
+<!--
+   <div padding *ngIf="viewButton">
 
       <ion-row>
          <ion-col>
-           <button ion-button color="danger" (click)="elimina()" round>Elimina</button>
+           <button ion-button color="primary" (click)="onAnnulla()" round>Annulla</button>
          </ion-col>
          <ion-col>
-           <button ion-button color="secondary" (click)="modificaCivico()" round>Modifica</button>
+           <button ion-button color="primary"  round>Modifica</button>
          </ion-col>
        </ion-row>
     </div>
     -->
+
   </ion-list>
 </ion-content>
 

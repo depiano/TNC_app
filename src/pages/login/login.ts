@@ -7,6 +7,7 @@ import {Md5} from "md5-typescript";
 
 
 
+
 @IonicPage()
 @Component({
   selector: 'page-welcome',
@@ -24,6 +25,7 @@ export class LoginPage {
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private http: HTTP, public alertCtrl: AlertController) {
+
       sessionStorage.clear();
       this.user =  {email: '', password: ''};
 this.error=false;
@@ -69,6 +71,13 @@ this.error=false;
                this.fullName=this.items.RESULT.FULLNAME;
                 this.codice=this.items.RESULT.CF;
                 this.e_mail=this.items.RESULT.EMAIL;
+
+               /*  let alert = this.alertCtrl.create({
+                       title: "errore",
+                       subTitle:data.data,
+                       buttons: ['Dismiss']
+                   });
+                   alert.present();*/
 
 
     if(this.errore==='none'){

@@ -20,7 +20,7 @@
   <div padding>
     <ion-list>
       <ion-item>
-        <ion-input type="text" placeholder="Email" [(ngModel)]="user.email" name="email" #email (change)="onAlert()"></ion-input>
+        <ion-input type="text" placeholder="Email" [(ngModel)]="user.email" name="email" #email (change)="onAlert()" [readonly]="read"></ion-input>
       </ion-item>
 
       <ion-item>

@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
-import { Camera, CameraOptions } from '@ionic-native/camera';
-import { HttpClient } from '@angular/common/http';
-import { NativeGeocoder, NativeGeocoderReverseResult, NativeGeocoderForwardResult } from '@ionic-native/native-geocoder';
+import { Camera} from '@ionic-native/camera';
+import { NativeGeocoder, NativeGeocoderReverseResult} from '@ionic-native/native-geocoder';
 import {ViewController} from 'ionic-angular';
 import {HTTP} from "@ionic-native/http";
-import {Md5 } from "md5-typescript";
+import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
+import {HomePage} from "../home/home";
+
 
 /**
  * Generated class for the AggiungicivicoPage page.
@@ -33,6 +34,12 @@ export class AggiungicivicoPage {
   items;
   esponente;
   sessione;
+  fotoAbitazione;
+  fotoNumeroCivico;
+  suggerimento;
+  foto;
+  errore;
+
 
 
 
@@ -45,8 +52,14 @@ export class AggiungicivicoPage {
 
 
 
-    constructor(public viewCtrl: ViewController, public navCtrl: NavController, public navParams: NavParams,private camera: Camera,  private http: HTTP,private nativeGeocoder: NativeGeocoder, public alertCtrl: AlertController) {
-this.alert=false;
+    constructor(public viewCtrl: ViewController, public navCtrl: NavController, public navParams: NavParams,private camera: Camera, private transfer: FileTransfer,  private http: HTTP,private nativeGeocoder: NativeGeocoder, public alertCtrl: AlertController) {
+        this.alert=false;
+        this.foto=false;
+        this.fotoNumeroCivico='';
+        this.fotoAbitazione='';
+        this.esponente="";
+
+
         this.sessione=sessionStorage.getItem('sessionCodice');
 
         this.autocompleteItems = [];
@@ -156,7 +169,6 @@ this.alert=false;
 
       this.latitudine=this.navParams.get('latitudine');
       this.longitudine=this.navParams.get('longitudine');
-      this.esponente="";
        this.DUG="";
        this.denominazione="";
        this.paese="";
@@ -167,7 +179,7 @@ this.alert=false;
             .then((result: NativeGeocoderReverseResult) => {
 
                 this.paese=result[0].locality.toUpperCase();
-                this.denominazione=result[0].thoroughfare;
+                this.suggerimento=result[0].thoroughfare;
                 this.codicepostale=result[0].postalCode;
                 this.provincia=result[0].subAdministrativeArea;
 
@@ -221,61 +233,174 @@ onClear(){
 
 
   conferma(){
-      if(this.latitudine===''||this.longitudine===''||this.searchDUG===''||this.denominazione===''){
-this.alert=true;
+
+   // this.oncontrollaCampi();
+
+      var data;
+      var time = new Date();
+      var giorno= ''+time.getDate();
+      var anno =''+time.getFullYear();
+      var month= time.getMonth()+1;
+      var mese=''+month;
+      if(giorno.length===1)
+          giorno='0'+giorno;
+      if(mese.length===1)
+          mese='0'+mese;
+data=giorno+'/'+mese+'/'+anno;
+      if(this.latitudine === ''||this.longitudine === ''||this.searchDUG === ''||this.denominazione === ''||this.civico === ''){
+          this.alert=true;
       }
       else {
 
-          let postParams = {
-              'LONGITUDINE': this.longitudine,
-              'LATITUDINE': this.latitudine,
-              'CODISTAT': '065052',
-              'NOMECOMUNE': this.paese,
-              'DUG': this.searchDUG,
-              'DENOMINAZIONE': this.denominazione,
-              'CIVICO': this.civico,
-              'ESPONENTE': this.esponente,
-              'PATHFOTOCIVICO': '',
-              'PATHFOTOABITAZIONE': 'NULL',
-              'CF_USER': this.sessione,
-              'CF_SUPERUSER': 'NULL',
-              'LONGITUDINE_ARR': 'NULL',
-              'LATITUDINE_ARR': 'NULL'
+          if (this.fotoNumeroCivico === '' || this.fotoAbitazione === '') {
+              this.foto = true;
           }
+          else {
+              if(this.esponente ===''){
+                  this.esponente='NON DISPONIBILE';
+              }
+              let postParams = {
+                  'LONGITUDINE': this.longitudine,
+                  'LATITUDINE': this.latitudine,
+                  'CODISTAT': '065052',
+                  'NOMECOMUNE': this.paese,
+                  'DUG': this.searchDUG,
+                  'DENOMINAZIONE': this.denominazione,
+                  'CIVICO': this.civico,
+                  'ESPONENTE': this.esponente,
+                  'PATHFOTOCIVICO': 'http://tcnapp.altervista.org/uploads/' + this.fotoNumeroCivico,
+                  'PATHFOTOABITAZIONE': 'http://tcnapp.altervista.org/uploads/' + this.fotoAbitazione,
+                  'CF_USER': this.sessione,
+                  'CF_SUPERUSER': null,
+                  'LONGITUDINE_ARR': null,
+                  'LATITUDINE_ARR': null,
+                  'STATO': 'IN ATTESA',
+                  'DATA': data
+              }
 
-          let headers = {
-              'Content-Type': 'application/json'
-          };
-          this.http.post('http://tcnapp.altervista.org/script_tncapp/addCivico.php', postParams, headers)
-              .then(data => {
-                  this.items=JSON.parse(data.data);
-                  console.log(data.status);
-                  console.log(data.data); // data received by server
-                  console.log(data.headers);
-                 /* let alert = this.alertCtrl.create({
-                      title: data.data,
-                      buttons: ['Dismiss']
+              let headers = {
+                  'Content-Type': 'application/json'
+              };
+              this.http.post('http://tcnapp.altervista.org/script_tncapp/addCivico.php', postParams, headers)
+                  .then(data => {
+                      this.items = JSON.parse(data.data);
+                      this.errore = this.items.ERROR;
+                      if (this.errore === 'none') {
+                          this.navCtrl.setRoot(HomePage);
+                      }
+
+                  })
+                  .catch(error => {
+
+                      console.log(error.status);
+                      console.log(error.error); // error message as string
+                      console.log(error.headers);
+
                   });
-                  alert.present();*/
-
-              })
-              .catch(error => {
-
-                  console.log(error.status);
-                  console.log(error.error); // error message as string
-                  console.log(error.headers);
-
-              });
+          }
       }
   }
 
 
 
 
+    fotoCivico(){
+
+        var data = new Date();
 
 
+        var time =data.getTime();
+
+        let options = {
+
+            quality: 100
+        };
+
+
+        this.camera.getPicture(options).then((imageData) => {
+            // imageData is either a base64 encoded string or a file URI
+            // If it's base64:
+            this.fotoNumeroCivico=time;
+
+            const fileTransfer: FileTransferObject = this.transfer.create();
+
+            let options1: FileUploadOptions = {
+                fileKey: 'file',
+                fileName: this.fotoNumeroCivico,
+                headers: {}
+
+            }
+
+            fileTransfer.upload(imageData, 'http://tcnapp.altervista.org/upload.php', options1)
+                .then((data) => {
+                    // success
+                    alert("success");
+                }, (err) => {
+                    // error
+                    alert("error"+JSON.stringify(err));
+                });
+
+
+        });
+
+
+    }
+
+
+    fotoCasa(){
+        var data = new Date();
+
+
+        var time =data.getTime();
+
+
+        let options = {
+
+            quality: 100
+        };
+
+this.fotoAbitazione=time;
+        this.camera.getPicture(options).then((imageData) => {
+            // imageData is either a base64 encoded string or a file URI
+            // If it's base64:
+
+            const fileTransfer: FileTransferObject = this.transfer.create();
+
+            let options1: FileUploadOptions = {
+                fileKey: 'file',
+                fileName: this.fotoAbitazione,
+                headers: {}
+
+            }
+
+            fileTransfer.upload(imageData, 'http://tcnapp.altervista.org/upload.php', options1)
+                .then((data) => {
+                    // success
+                    alert("success");
+                }, (err) => {
+                    // error
+                    alert("error"+JSON.stringify(err));
+                });
+
+
+        });
+
+
+    }
+
+onAnnulla(){
+    this.navCtrl.setRoot(HomePage);
+}
+
+oncontrollaCampi(){
+    if(this.latitudine === ''||this.longitudine === ''||this.searchDUG === ''||this.denominazione === ''||this.civico === ''){
+        this.alert=true;
+    }
+
+}
 
     onAlert(){
+        this.foto=false;
         this.alert=false;
     }
 
