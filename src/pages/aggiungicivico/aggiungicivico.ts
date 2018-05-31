@@ -267,7 +267,7 @@ data=giorno+'/'+mese+'/'+anno;
                   'DUG': this.searchDUG,
                   'DENOMINAZIONE': this.denominazione.toUpperCase(),
                   'CIVICO': this.civico,
-                  'ESPONENTE': this.esponente,
+                  'ESPONENTE': this.esponente.toUpperCase(),
                   'PATHFOTOCIVICO': 'http://tcnapp.altervista.org/uploads/' + this.fotoNumeroCivico,
                   'PATHFOTOABITAZIONE': 'http://tcnapp.altervista.org/uploads/' + this.fotoAbitazione,
                   'CF_USER': this.sessione,
