@@ -81,8 +81,8 @@ export class VisualizzamappaPage {
                     var counter = this.items[i];
                     marker = new google.maps.Marker({
                         position: new google.maps.LatLng(this.items[i].LATITUDINE, this.items[i].LONGITUDINE),
-                        map: this.map
-
+                        map: this.map,
+                        icon:"assets/imgs/marker_mappa.png"
 
                     });
 
@@ -102,11 +102,6 @@ export class VisualizzamappaPage {
                         return function() {
                               infowindow.setContent(counter.DUG+" "+ counter.DENOMINAZIONE+" "+counter.CIVICO);
                             infowindow.open(this.map, marker);
-
-
-
-
-
                         }
                     })(marker, counter));
 

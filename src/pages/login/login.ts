@@ -54,11 +54,7 @@ this.error=false;
             'password': criptPassword
         }
 
-        let datas = {
-            'Action': 'Login',
-            'UserName': 'bla',
-            'Password': 'blabla'
-        };
+
         let headers = {
             'Content-Type': 'application/json'
         };
@@ -72,12 +68,6 @@ this.error=false;
                 this.codice=this.items.RESULT.CF;
                 this.e_mail=this.items.RESULT.EMAIL;
 
-               /*  let alert = this.alertCtrl.create({
-                       title: "errore",
-                       subTitle:data.data,
-                       buttons: ['Dismiss']
-                   });
-                   alert.present();*/
 
 
     if(this.errore==='none'){
