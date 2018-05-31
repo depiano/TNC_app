@@ -222,7 +222,7 @@ var AggiungicivicoPage = /** @class */ (function () {
                     'CODISTAT': '065052',
                     'NOMECOMUNE': this.paese,
                     'DUG': this.searchDUG,
-                    'DENOMINAZIONE': this.denominazione,
+                    'DENOMINAZIONE': this.denominazione.toUpperCase(),
                     'CIVICO': this.civico,
                     'ESPONENTE': this.esponente,
                     'PATHFOTOCIVICO': 'http://tcnapp.altervista.org/uploads/' + this.fotoNumeroCivico,
