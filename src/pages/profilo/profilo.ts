@@ -3,12 +3,6 @@ import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angu
 import {ModificaprofiloPage} from "../modificaprofilo/modificaprofilo";
 import {HTTP} from "@ionic-native/http";
 
-/**
- * Generated class for the ProfiloPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({

@@ -18,12 +18,12 @@
 
     <ion-item>
       <ion-label floating>Latitudine</ion-label>
-      <ion-input type="text" [(ngModel)]="latitudine" (change)="onAlert()"></ion-input>
+      <ion-input type="text" [(ngModel)]="latitudine" (change)="onAlert()" [readonly]="true"></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label floating>Longitudine</ion-label>
-      <ion-input type="text" [(ngModel)]="longitudine" (change)="onAlert()"></ion-input>
+      <ion-input type="text" [(ngModel)]="longitudine" (change)="onAlert()" [readonly]="true"></ion-input>
     </ion-item>
 
       <ion-item>

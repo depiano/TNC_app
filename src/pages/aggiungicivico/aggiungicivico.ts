@@ -265,15 +265,12 @@ data=giorno+'/'+mese+'/'+anno;
                   'CODISTAT': '065052',
                   'NOMECOMUNE': this.paese,
                   'DUG': this.searchDUG,
-                  'DENOMINAZIONE': this.denominazione,
+                  'DENOMINAZIONE': this.denominazione.toUpperCase(),
                   'CIVICO': this.civico,
-                  'ESPONENTE': this.esponente,
+                  'ESPONENTE': this.esponente.toUpperCase(),
                   'PATHFOTOCIVICO': 'http://tcnapp.altervista.org/uploads/' + this.fotoNumeroCivico,
                   'PATHFOTOABITAZIONE': 'http://tcnapp.altervista.org/uploads/' + this.fotoAbitazione,
                   'CF_USER': this.sessione,
-                  'CF_SUPERUSER': null,
-                  'LONGITUDINE_ARR': null,
-                  'LATITUDINE_ARR': null,
                   'STATO': 'IN ATTESA',
                   'DATA': data
               }
